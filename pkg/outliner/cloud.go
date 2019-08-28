@@ -4,7 +4,7 @@ type Cloud struct {
 	pool map[string]Provider
 }
 
-func (c *Cloud)AddProvider(prvders []Provider) {
+func (c *Cloud)AddProvider(prvders ...Provider) {
 	for _, prvder := range prvders {
 		if prvder.Init() {
 			c.pool[prvder.Name()] = prvder

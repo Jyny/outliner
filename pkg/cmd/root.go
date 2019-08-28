@@ -8,14 +8,11 @@ import (
 	"github.com/spf13/cobra"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
-)
 
-func init() {
-	cobra.OnInitialize(initConfig)
-}
-  
-func initConfig() {
-}
+	"github.com/jyny/outliner/pkg/cloud/digitalocean"
+	"github.com/jyny/outliner/pkg/cloud/linode"
+	"github.com/jyny/outliner/pkg/cloud/vultr"
+)
 
 var outliner = ol.New()
 
@@ -30,4 +27,16 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+  
+func initConfig() {
+	outliner.AddProvider(
+		digitalocean.DigitalOcean{},
+		linode.Linode{},
+		vultr.Vultr{},
+	)
 }
