@@ -8,11 +8,11 @@ Auto deploy & setup tool for outline VPN server
 ## Development & Build
 #### install depend package
 ```
-go mod download
+make mod
 ```
 #### build binary
 ```
-go build
+make build
 ```
 #### run
 ```

@@ -1,19 +1,24 @@
 package outliner
 
+// Cloud core object for outliner
 type Cloud struct {
 	pool map[string]Provider
 }
 
-func (c *Cloud)AddProvider(prvders ...Provider) {
-	for _, prvder := range prvders {
-		if prvder.Init() {
-			c.pool[prvder.Name()] = prvder
+// RegisterProvider Register a cloud Provider whith Validater function
+func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
+	for _, actvr := range actvrs {
+		prvdr, err := validater(actvr)
+		if err != nil {
+			continue
 		}
+		c.pool[prvdr.Name()] = prvdr
 	}
 }
 
-func (c *Cloud)LookupRegion() map[string][]string{
-	mapPrvderRegion := make( map[string][]string)
+// LookupRegion show avalible Regions on Providers
+func (c *Cloud) LookupRegion() map[string][]string {
+	mapPrvderRegion := make(map[string][]string)
 	for _, prvder := range c.pool {
 		var regs []string
 		for _, reg := range prvder.Region() {
@@ -24,7 +29,8 @@ func (c *Cloud)LookupRegion() map[string][]string{
 	return mapPrvderRegion
 }
 
-func (c *Cloud)ListInstance() []Instance {
+// ListInstance list all instances create by outliner
+func (c *Cloud) ListInstance() []Instance {
 	var ret []Instance
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
@@ -34,11 +40,13 @@ func (c *Cloud)ListInstance() []Instance {
 	return ret
 }
 
-func (c *Cloud)CreateInstance(spec InstanceSpec) Instance {
+// CreateInstance create a instance on server Provider
+func (c *Cloud) CreateInstance(spec InstanceSpec) Instance {
 	return c.pool[spec.Provider].CreateInstance(spec)
 }
 
-func (c *Cloud)InspectInstance(ID string) Instance {
+// InspectInstance show the instance and VPN service info
+func (c *Cloud) InspectInstance(ID string) Instance {
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
 			if inst.ID == ID {
@@ -49,7 +57,8 @@ func (c *Cloud)InspectInstance(ID string) Instance {
 	return Instance{}
 }
 
-func (c *Cloud)DestroyInstance(ID string) {
+// DestroyInstance destroy a instanceon server Provider
+func (c *Cloud) DestroyInstance(ID string) {
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
 			if inst.ID == ID {
