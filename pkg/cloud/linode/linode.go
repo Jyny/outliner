@@ -7,23 +7,27 @@ import (
 	"github.com/linode/linodego"
 	"golang.org/x/oauth2"
 
-	"github.com/spf13/viper"
-
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
 type Linode struct {
+	API_KEY string
 }
 
-func (li Linode) Init() bool {
-	viper.SetDefault("LINODE_TOKEN", "")
+func (li Linode) TokenKey() []string {
+	return []string{
+		"LINODE_TOKEN",
+		"LINODE_API_KEY",
+	}
+}
 
+func (li Linode) Verify(apikeys []string) bool {
 	linodeClient := linodego.NewClient(
 		&http.Client{
 			Transport: &oauth2.Transport{
 				Source: oauth2.StaticTokenSource(
 					&oauth2.Token{
-						AccessToken: viper.Get("LINODE_TOKEN").(string),
+						AccessToken: "",
 					},
 				),
 			},

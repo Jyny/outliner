@@ -6,9 +6,7 @@ type Cloud struct {
 
 func (c *Cloud) AddProvider(prvders ...Provider) {
 	for _, prvder := range prvders {
-		if prvder.Init() {
-			c.pool[prvder.Name()] = prvder
-		}
+		c.pool[prvder.Name()] = prvder
 	}
 }
 

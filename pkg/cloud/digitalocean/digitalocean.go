@@ -10,7 +10,13 @@ import (
 type DigitalOcean struct {
 }
 
-func (do DigitalOcean) Init() bool {
+func (do DigitalOcean) TokenKey() []string {
+	return []string{
+		"",
+	}
+}
+
+func (do DigitalOcean) Verify([]string) bool {
 	return false
 }
 

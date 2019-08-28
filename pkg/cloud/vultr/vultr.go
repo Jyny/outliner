@@ -9,7 +9,13 @@ import (
 type Vultr struct {
 }
 
-func (vt Vultr) Init() bool {
+func (vt Vultr) TokenKey() []string {
+	return []string{
+		"",
+	}
+}
+
+func (vt Vultr) Verify([]string) bool {
 	return false
 }
 

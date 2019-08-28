@@ -1,7 +1,8 @@
 package outliner
 
 type Provider interface {
-	Init() bool                           // verify api key & availability & init
+	TokenKey() []string                   // list Token key for register
+	Verify([]string) bool                 // verify api key & availability & init
 	Name() string                         // provider's name
 	Region() []string                     // list provider's available regions
 	ListInstance() []Instance             // list created instance on provider
