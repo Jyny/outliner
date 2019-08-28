@@ -1,9 +1,9 @@
 package outliner
 
 func init() {
-	//cloud.AddProvider()
 }
 
+// New generate new object
 func New() *Cloud {
-	return new(Cloud)
+	return &Cloud{make(map[string]Provider)}
 }
