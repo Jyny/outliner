@@ -1,23 +1,13 @@
 package digitalocean
 
 import (
-	_ "github.com/digitalocean/godo"
-	_ "golang.org/x/oauth2"
-
 	ol "github.com/jyny/outliner/pkg/outliner"
+
+	"github.com/digitalocean/godo"
 )
 
 type DigitalOcean struct {
-}
-
-func (do DigitalOcean) TokenKey() []string {
-	return []string{
-		"",
-	}
-}
-
-func (do DigitalOcean) Verify([]string) bool {
-	return false
+	API godo.Client
 }
 
 func (do DigitalOcean) Name() string {

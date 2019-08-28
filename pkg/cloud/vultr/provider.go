@@ -1,22 +1,13 @@
 package vultr
 
 import (
-	_ "github.com/vultr/govultr"
-
 	ol "github.com/jyny/outliner/pkg/outliner"
+
+	"github.com/vultr/govultr"
 )
 
 type Vultr struct {
-}
-
-func (vt Vultr) TokenKey() []string {
-	return []string{
-		"",
-	}
-}
-
-func (vt Vultr) Verify([]string) bool {
-	return false
+	API govultr.Client
 }
 
 func (vt Vultr) Name() string {
