@@ -1,28 +1,28 @@
 package outliner
 
 type Provider interface {
-	Init() bool
-	Name() string
-	Region() []string
-	ListInstance() []Instance
-	CreateInstance(InstanceSpec) Instance
-	InspectInstance(string) Instance
-	DestroyInstance(string)
+	Init() bool                           // verify api key & availability & init
+	Name() string                         // provider's name
+	Region() []string                     // list provider's available regions
+	ListInstance() []Instance             // list created instance on provider
+	CreateInstance(InstanceSpec) Instance // create instance on provider
+	InspectInstance(string) Instance      // get info about instance and vpn
+	DestroyInstance(string)               // destroy instance on provider
 }
 
 type Instance struct {
-	ID string
+	ID           string
 	InstanceSpec InstanceSpec
-	APICert APICert
+	APICert      APICert
 }
 
 type InstanceSpec struct {
-	Spec string
-	Region string
+	Spec     string
+	Region   string
 	Provider string
 }
 
 type APICert struct {
-	APIurl string
+	APIurl     string
 	CertSha256 string
 }

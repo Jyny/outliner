@@ -4,7 +4,7 @@ type Cloud struct {
 	pool map[string]Provider
 }
 
-func (c *Cloud)AddProvider(prvders ...Provider) {
+func (c *Cloud) AddProvider(prvders ...Provider) {
 	for _, prvder := range prvders {
 		if prvder.Init() {
 			c.pool[prvder.Name()] = prvder
@@ -12,8 +12,8 @@ func (c *Cloud)AddProvider(prvders ...Provider) {
 	}
 }
 
-func (c *Cloud)LookupRegion() map[string][]string{
-	mapPrvderRegion := make( map[string][]string)
+func (c *Cloud) LookupRegion() map[string][]string {
+	mapPrvderRegion := make(map[string][]string)
 	for _, prvder := range c.pool {
 		var regs []string
 		for _, reg := range prvder.Region() {
@@ -24,7 +24,7 @@ func (c *Cloud)LookupRegion() map[string][]string{
 	return mapPrvderRegion
 }
 
-func (c *Cloud)ListInstance() []Instance {
+func (c *Cloud) ListInstance() []Instance {
 	var ret []Instance
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
@@ -34,11 +34,11 @@ func (c *Cloud)ListInstance() []Instance {
 	return ret
 }
 
-func (c *Cloud)CreateInstance(spec InstanceSpec) Instance {
+func (c *Cloud) CreateInstance(spec InstanceSpec) Instance {
 	return c.pool[spec.Provider].CreateInstance(spec)
 }
 
-func (c *Cloud)InspectInstance(ID string) Instance {
+func (c *Cloud) InspectInstance(ID string) Instance {
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
 			if inst.ID == ID {
@@ -49,7 +49,7 @@ func (c *Cloud)InspectInstance(ID string) Instance {
 	return Instance{}
 }
 
-func (c *Cloud)DestroyInstance(ID string) {
+func (c *Cloud) DestroyInstance(ID string) {
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
 			if inst.ID == ID {

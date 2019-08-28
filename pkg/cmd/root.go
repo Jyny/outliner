@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"os"
 	"fmt"
+	"os"
 
-	_ "github.com/spf13/viper"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
 
@@ -14,6 +14,12 @@ import (
 	"github.com/jyny/outliner/pkg/cloud/vultr"
 )
 
+// Persistent Flags
+var apikeycfg string
+var id_rsa string
+var id_rsa_pub string
+
+// Persi	stent outliner for other commends
 var outliner = ol.New()
 
 var rootCmd = &cobra.Command{
@@ -22,21 +28,27 @@ var rootCmd = &cobra.Command{
 	Long:  `outliner long`,
 }
 
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
-
 func init() {
 	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().StringVarP(&apikeycfg, "apikey", "k", "", "export api key from file")
 }
-  
+
 func initConfig() {
+	if apikeycfg != "" {
+		viper.SetConfigFile(apikeycfg)
+	}
+
+	// add cloud providers
 	outliner.AddProvider(
 		digitalocean.DigitalOcean{},
 		linode.Linode{},
 		vultr.Vultr{},
 	)
+}
+
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
