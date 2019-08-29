@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"path"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -43,18 +44,24 @@ func init() {
 }
 
 func initConfig() {
-	if apikeycfg != "" {
-		viper.SetConfigFile(apikeycfg)
-	} else {
-		usr, err := user.Current()
-		if err != nil {
-			panic(err)
-		}
-		viper.AddConfigPath(usr.HomeDir)
-		viper.SetConfigName("outliner.env")
+	u, err := user.Current()
+	if err != nil {
+		panic(err)
 	}
 
-	err := viper.ReadInConfig()
+	// define `.env`
+	viper.SetConfigType("env")
+	viper.SetConfigName("")
+
+	// search from possible paths
+	viper.AddConfigPath(path.Join(u.HomeDir, "/.outliner/"))
+	viper.AddConfigPath(u.HomeDir)
+	viper.AddConfigPath(".")
+
+	// top precedence order is explicit config file path
+	viper.SetConfigFile(apikeycfg)
+
+	err = viper.ReadInConfig()
 	if err != nil {
 		panic(err)
 	}

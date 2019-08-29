@@ -13,3 +13,5 @@ require (
 	golang.org/x/sys v0.0.0-20190826190057-c7b8b68b1456 // indirect
 	golang.org/x/text v0.3.2 // indirect
 )
+
+replace github.com/spf13/viper v1.4.0 => github.com/jyny/viper v1.4.1
