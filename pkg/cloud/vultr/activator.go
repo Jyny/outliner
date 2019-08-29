@@ -7,13 +7,16 @@ import (
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
+var tokenNames = []string{
+	"TOKEN",
+}
+
 type Activator struct {
-	TokenNames []string
-	API_TOEKN  string
+	API_TOEKN string
 }
 
 func (a Activator) ListTokenName() []string {
-	return a.TokenNames
+	return tokenNames
 }
 
 func (a Activator) VerifyToken(token string) bool {

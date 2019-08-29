@@ -58,15 +58,17 @@ func providerRegister(actvrs ...ol.Activator) {
 	for _, actvr := range actvrs {
 		prvdr, err := activateProvider(actvr)
 		if err != nil {
-			outliner.AddProvider(prvdr)
+			continue
 		}
+		outliner.AddProvider(prvdr)
 	}
 }
 
 func activateProvider(actvr ol.Activator) (ol.Provider, error) {
 	for _, tokenName := range actvr.ListTokenName() {
-		token := viper.Get(tokenName)
-		if actvr.VerifyToken(token.(string)) {
+		viper.SetDefault(tokenName, "")
+		token := viper.Get(tokenName).(string)
+		if actvr.VerifyToken(token) {
 			return actvr.GenProvider(), nil
 		}
 	}
