@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
+	"os/user"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -39,12 +39,24 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&apikeycfg, "apikey", "k", "", "export api key from file")
+	rootCmd.PersistentFlags().StringVarP(&apikeycfg, "env", "E", "", "export api key from file")
 }
 
 func initConfig() {
 	if apikeycfg != "" {
 		viper.SetConfigFile(apikeycfg)
+	} else {
+		usr, err := user.Current()
+		if err != nil {
+			panic(err)
+		}
+		viper.AddConfigPath(usr.HomeDir)
+		viper.SetConfigName("outliner.env")
+	}
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
 	}
 
 	// Activate & register cloud providers
@@ -54,15 +66,4 @@ func initConfig() {
 		linode.Activator{},
 		vultr.Activator{},
 	)
-}
-
-func validater(actvr ol.Activator) (ol.Provider, error) {
-	for _, tokenName := range actvr.ListTokenName() {
-		viper.SetDefault(tokenName, "")
-		token := viper.Get(tokenName).(string)
-		if actvr.VerifyToken(token) {
-			return actvr.GenProvider(), nil
-		}
-	}
-	return nil, errors.New("invalid tokens")
 }
