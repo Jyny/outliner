@@ -6,6 +6,8 @@ import (
 
 	"github.com/linode/linodego"
 	"golang.org/x/oauth2"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
 type Activator struct {
@@ -38,6 +40,6 @@ func (a Activator) VerifyToken(token string) bool {
 	return true
 }
 
-func (a Activator) GenClient() *Linode {
-	return new(Linode)
+func (a Activator) GenProvider() ol.Provider {
+	return *new(Provider)
 }

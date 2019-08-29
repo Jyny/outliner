@@ -1,34 +1,36 @@
 package digitalocean
 
 import (
-	ol "github.com/jyny/outliner/pkg/outliner"
-
 	"github.com/digitalocean/godo"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-type DigitalOcean struct {
+var providerName = "DigitalOcean"
+
+type Provider struct {
 	API godo.Client
 }
 
-func (do DigitalOcean) Name() string {
-	return "DigitalOcean"
+func (p Provider) Name() string {
+	return providerName
 }
 
-func (do DigitalOcean) Region() []string {
+func (p Provider) Region() []string {
 	return make([]string, 0)
 }
 
-func (do DigitalOcean) ListInstance() []ol.Instance {
+func (p Provider) ListInstance() []ol.Instance {
 	return make([]ol.Instance, 0)
 }
 
-func (do DigitalOcean) CreateInstance(ol.InstanceSpec) ol.Instance {
+func (p Provider) CreateInstance(ol.InstanceSpec) ol.Instance {
 	return ol.Instance{}
 }
 
-func (do DigitalOcean) InspectInstance(string) ol.Instance {
+func (p Provider) InspectInstance(string) ol.Instance {
 	return ol.Instance{}
 }
 
-func (do DigitalOcean) DestroyInstance(string) {
+func (p Provider) DestroyInstance(string) {
 }

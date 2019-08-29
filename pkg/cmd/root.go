@@ -39,10 +39,10 @@ func initConfig() {
 	}
 
 	// add cloud providers
-	outliner.AddProvider(
-		digitalocean.DigitalOcean{},
-		linode.Linode{},
-		vultr.Vultr{},
+	outliner.ActivateProvider(
+		digitalocean.Activator{},
+		linode.Activator{},
+		vultr.Activator{},
 	)
 }
 

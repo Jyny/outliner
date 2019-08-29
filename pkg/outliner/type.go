@@ -3,7 +3,7 @@ package outliner
 type Activator interface {
 	ListTokenName() []string // list Token names for register
 	VerifyToken(string) bool // verify api key & availability
-	GenProvider() *Provider  // Gen a Provider
+	GenProvider() Provider   // Gen a Provider
 }
 
 type Provider interface { // new a provider

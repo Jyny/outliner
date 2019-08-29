@@ -1,34 +1,36 @@
 package linode
 
 import (
-	ol "github.com/jyny/outliner/pkg/outliner"
-
 	"github.com/linode/linodego"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-type Linode struct {
+var providerName = "Linode"
+
+type Provider struct {
 	API linodego.Client
 }
 
-func (li Linode) Name() string {
-	return "Linode"
+func (p Provider) Name() string {
+	return providerName
 }
 
-func (li Linode) Region() []string {
+func (p Provider) Region() []string {
 	return make([]string, 0)
 }
 
-func (li Linode) ListInstance() []ol.Instance {
+func (p Provider) ListInstance() []ol.Instance {
 	return make([]ol.Instance, 0)
 }
 
-func (li Linode) CreateInstance(ol.InstanceSpec) ol.Instance {
+func (p Provider) CreateInstance(ol.InstanceSpec) ol.Instance {
 	return ol.Instance{}
 }
 
-func (li Linode) InspectInstance(string) ol.Instance {
+func (p Provider) InspectInstance(string) ol.Instance {
 	return ol.Instance{}
 }
 
-func (li Linode) DestroyInstance(string) {
+func (p Provider) DestroyInstance(string) {
 }

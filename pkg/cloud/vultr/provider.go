@@ -1,34 +1,36 @@
 package vultr
 
 import (
-	ol "github.com/jyny/outliner/pkg/outliner"
-
 	"github.com/vultr/govultr"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-type Vultr struct {
+var providerName = "Vultr"
+
+type Provider struct {
 	API govultr.Client
 }
 
-func (vt Vultr) Name() string {
-	return "Vultr"
+func (p Provider) Name() string {
+	return providerName
 }
 
-func (vt Vultr) Region() []string {
+func (p Provider) Region() []string {
 	return make([]string, 0)
 }
 
-func (vt Vultr) ListInstance() []ol.Instance {
+func (p Provider) ListInstance() []ol.Instance {
 	return make([]ol.Instance, 0)
 }
 
-func (vt Vultr) CreateInstance(ol.InstanceSpec) ol.Instance {
+func (p Provider) CreateInstance(ol.InstanceSpec) ol.Instance {
 	return ol.Instance{}
 }
 
-func (vt Vultr) InspectInstance(string) ol.Instance {
+func (p Provider) InspectInstance(string) ol.Instance {
 	return ol.Instance{}
 }
 
-func (vt Vultr) DestroyInstance(string) {
+func (p Provider) DestroyInstance(string) {
 }
