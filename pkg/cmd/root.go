@@ -17,10 +17,10 @@ import (
 
 // Persistent Flags
 var apikeycfg string
-var id_rsa string
-var id_rsa_pub string
+var sshkey string
+var sshkeyPub string
 
-// Persi	stent outliner for other commends
+// Persistent outliner for other commends
 var outliner = ol.New()
 
 var rootCmd = &cobra.Command{
@@ -29,6 +29,7 @@ var rootCmd = &cobra.Command{
 	Long:  `outliner long`,
 }
 
+// Execute entry of commandline
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -47,24 +48,15 @@ func initConfig() {
 	}
 
 	// Activate & register cloud providers
-	providerRegister(
+	outliner.RegisterProvider(
+		validater,
 		digitalocean.Activator{},
 		linode.Activator{},
 		vultr.Activator{},
 	)
 }
 
-func providerRegister(actvrs ...ol.Activator) {
-	for _, actvr := range actvrs {
-		prvdr, err := activateProvider(actvr)
-		if err != nil {
-			continue
-		}
-		outliner.AddProvider(prvdr)
-	}
-}
-
-func activateProvider(actvr ol.Activator) (ol.Provider, error) {
+func validater(actvr ol.Activator) (ol.Provider, error) {
 	for _, tokenName := range actvr.ListTokenName() {
 		viper.SetDefault(tokenName, "")
 		token := viper.Get(tokenName).(string)
