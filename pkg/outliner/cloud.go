@@ -4,9 +4,8 @@ type Cloud struct {
 	pool map[string]Provider
 }
 
-func (c *Cloud) ActivateProvider(actvrs ...Activator) {
-	for _, actvr := range actvrs {
-		prvder := actvr.GenProvider()
+func (c *Cloud) AddProvider(prvders ...Provider) {
+	for _, prvder := range prvders {
 		c.pool[prvder.Name()] = prvder
 	}
 }
