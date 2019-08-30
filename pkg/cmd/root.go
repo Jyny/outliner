@@ -4,22 +4,21 @@ import (
 	"fmt"
 	"os"
 	"os/user"
-	"path"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	ol "github.com/jyny/outliner/pkg/outliner"
-
 	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
 	"github.com/jyny/outliner/pkg/cloud/linode"
 	//"github.com/jyny/outliner/pkg/cloud/vultr"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
+	"github.com/jyny/outliner/pkg/util"
 )
 
 // Persistent Flags
 var cfgFile string
-var sshkey string
-var sshkeyPub string
 
 // Persistent outliner for other commends
 var outliner = ol.New()
@@ -54,7 +53,7 @@ func initConfig() {
 	viper.SetConfigName("")
 
 	// search from possible paths
-	viper.AddConfigPath(path.Join(u.HomeDir, "/.outliner/"))
+	viper.AddConfigPath(filepath.Join(u.HomeDir, "/.outliner/"))
 	viper.AddConfigPath(u.HomeDir)
 	viper.AddConfigPath(".")
 
@@ -71,10 +70,15 @@ func initConfig() {
 
 	// Activate & register cloud providers
 	outliner.RegisterProvider(
-		validater,
+		util.Validater,
 		//digitalocean.Activator{},
 		linode.Activator{},
 		//vultr.Activator{},
 	)
 
+	if !outliner.CheckAvalible() {
+		fmt.Println("No avalible Provider")
+		fmt.Println("Check `.env` config or Network Status")
+		os.Exit(1)
+	}
 }
