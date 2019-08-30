@@ -10,8 +10,7 @@ import (
 
 func validater(actvr ol.Activator) (ol.Provider, error) {
 	for _, tokenName := range actvr.ListTokenName() {
-		viper.SetDefault(tokenName, "")
-		token := viper.Get(tokenName).(string)
+		token := viper.GetString(tokenName)
 		if actvr.VerifyToken(token) {
 			return actvr.GenProvider(), nil
 		}

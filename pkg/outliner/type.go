@@ -1,6 +1,7 @@
 package outliner
 
-// Validater define valid Provider to gen from Activator
+// Validater config & verify token
+// define valid Provider gen from Activator
 type Validater func(Activator) (Provider, error)
 
 // Activator object before generate a Provider

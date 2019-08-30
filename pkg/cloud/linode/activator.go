@@ -11,7 +11,9 @@ import (
 )
 
 var tokenNames = []string{
-	"TOKEN",
+	"LINODE_TOKEN",
+	"LINODE_CLI_TOKEN",
+	"LINODE_API_TOKEN",
 }
 
 type Activator struct {
@@ -44,5 +46,17 @@ func (a Activator) VerifyToken(token string) bool {
 }
 
 func (a Activator) GenProvider() ol.Provider {
-	return *new(Provider)
+	return Provider{
+		linodego.NewClient(
+			&http.Client{
+				Transport: &oauth2.Transport{
+					Source: oauth2.StaticTokenSource(
+						&oauth2.Token{
+							AccessToken: a.API_TOEKN,
+						},
+					),
+				},
+			},
+		),
+	}
 }

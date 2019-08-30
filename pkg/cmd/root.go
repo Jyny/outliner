@@ -17,7 +17,7 @@ import (
 )
 
 // Persistent Flags
-var apikeycfg string
+var cfgFile string
 var sshkey string
 var sshkeyPub string
 
@@ -40,7 +40,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&apikeycfg, "env", "E", "", "export api key from file")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "env", "E", "", "explicit config file path")
 }
 
 func initConfig() {
@@ -49,7 +49,7 @@ func initConfig() {
 		panic(err)
 	}
 
-	// define `.env`
+	// `.env` as config file name
 	viper.SetConfigType("env")
 	viper.SetConfigName("")
 
@@ -58,13 +58,16 @@ func initConfig() {
 	viper.AddConfigPath(u.HomeDir)
 	viper.AddConfigPath(".")
 
-	// top precedence order is explicit config file path
-	viper.SetConfigFile(apikeycfg)
-
-	err = viper.ReadInConfig()
-	if err != nil {
-		panic(err)
+	if cfgFile != "" {
+		// top precedence order of paths
+		viper.SetConfigFile(cfgFile)
+	} else {
+		// set flag to load config from $ENV
+		viper.AutomaticEnv()
 	}
+
+	// load config file
+	viper.ReadInConfig()
 
 	// Activate & register cloud providers
 	outliner.RegisterProvider(
@@ -73,4 +76,5 @@ func initConfig() {
 		linode.Activator{},
 		vultr.Activator{},
 	)
+
 }
