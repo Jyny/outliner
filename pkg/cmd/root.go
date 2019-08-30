@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/user"
+	"path"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -15,40 +17,64 @@ import (
 )
 
 // Persistent Flags
-var apikeycfg string
-var id_rsa string
-var id_rsa_pub string
+var cfgFile string
+var sshkey string
+var sshkeyPub string
 
-// Persi	stent outliner for other commends
+// Persistent outliner for other commends
 var outliner = ol.New()
 
 var rootCmd = &cobra.Command{
 	Use:   "outliner",
-	Short: "outliner short",
-	Long:  `outliner long`,
+	Short: "Auto setup &deploy tool for outline VPN server",
+	Long:  "Auto setup &deploy tool for outline VPN server",
 }
 
-func init() {
-	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&apikeycfg, "apikey", "k", "", "export api key from file")
-}
-
-func initConfig() {
-	if apikeycfg != "" {
-		viper.SetConfigFile(apikeycfg)
-	}
-
-	// add cloud providers
-	outliner.AddProvider(
-		digitalocean.DigitalOcean{},
-		linode.Linode{},
-		vultr.Vultr{},
-	)
-}
-
+// Execute entry of commandline
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
+}
+
+func initConfig() {
+	u, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+
+	// `.env` as config file name
+	viper.SetConfigType("env")
+	viper.SetConfigName("")
+
+	// search from possible paths
+	viper.AddConfigPath(path.Join(u.HomeDir, "/.outliner/"))
+	viper.AddConfigPath(u.HomeDir)
+	viper.AddConfigPath(".")
+
+	if cfgFile != "" {
+		// top precedence order of paths
+		viper.SetConfigFile(cfgFile)
+	} else {
+		// set flag to load config from $ENV
+		viper.AutomaticEnv()
+	}
+
+	// load config file
+	viper.ReadInConfig()
+
+	// Activate & register cloud providers
+	outliner.RegisterProvider(
+		validater,
+		digitalocean.Activator{},
+		linode.Activator{},
+		vultr.Activator{},
+	)
+
 }
