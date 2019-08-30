@@ -43,3 +43,28 @@ func printRegions(in map[string][]ol.Region) {
 	table.AppendBulk(data)
 	table.Render()
 }
+
+func printSpecs(in map[string][]ol.InstanceSpec) {
+	var data [][]string
+	for pname, p := range in {
+		for _, s := range p {
+			data = append(data, []string{
+				pname,
+				s.ID,
+				s.Transfer,
+				s.Price,
+			})
+		}
+	}
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{
+		"Provider",
+		"SpecID",
+		"Transfer",
+		"Price",
+	})
+	table.SetAutoMergeCells(true)
+	table.SetRowLine(true)
+	table.AppendBulk(data)
+	table.Render()
+}

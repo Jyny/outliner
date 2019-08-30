@@ -13,36 +13,39 @@ type Activator interface {
 
 // Provider defin server provider methods
 type Provider interface { // new a provider
-	Name() string                         // provider's name
-	Region() []Region                     // list provider's available regions
-	ListInstance() []Instance             // list created instance on provider
-	CreateInstance(InstanceSpec) Instance // create instance on provider
-	InspectInstance(string) Instance      // get info about instance and vpn
-	DestroyInstance(string)               // destroy instance on provider
+	Name() string                     // provider's name
+	ListSpec() []InstanceSpec         // list provider Instance Spec
+	ListRegion() []Region             // list provider's available regions
+	ListInstance() []Instance         // list created instance on provider
+	CreateInstance(Instance) Instance // create instance on provider
+	InspectInstance(string) Instance  // get info about instance and vpn
+	DestroyInstance(string)           // destroy instance on provider
 }
 
 // Instance info about server create on server provider
 type Instance struct {
 	ID           string
+	Provider     string
 	InstanceSpec InstanceSpec
+	Region       Region
 	APICert      APICert
-}
-
-// InstanceSpec info about server sepc
-type InstanceSpec struct {
-	Spec     string
-	Region   Region
-	Provider string
-}
-
-// APICert info about VPN service on instance
-type APICert struct {
-	APIurl     string
-	CertSha256 string
 }
 
 // Region info about Region
 type Region struct {
 	ID   string
 	Note string
+}
+
+// InstanceSpec info about server sepc
+type InstanceSpec struct {
+	ID       string
+	Transfer string
+	Price    string
+}
+
+// APICert info about VPN service on instance
+type APICert struct {
+	APIurl     string
+	CertSha256 string
 }

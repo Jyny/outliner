@@ -16,12 +16,25 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 	}
 }
 
+// LookupSpec show avalible Specs on Providers
+func (c *Cloud) LookupSpec() map[string][]InstanceSpec {
+	ret := make(map[string][]InstanceSpec)
+	for _, prvder := range c.pool {
+		var specs []InstanceSpec
+		for _, spec := range prvder.ListSpec() {
+			specs = append(specs, spec)
+		}
+		ret[prvder.Name()] = specs
+	}
+	return ret
+}
+
 // LookupRegion show avalible Regions on Providers
 func (c *Cloud) LookupRegion() map[string][]Region {
 	ret := make(map[string][]Region)
 	for _, prvder := range c.pool {
 		var regs []Region
-		for _, reg := range prvder.Region() {
+		for _, reg := range prvder.ListRegion() {
 			regs = append(regs, reg)
 		}
 		ret[prvder.Name()] = regs
@@ -41,8 +54,8 @@ func (c *Cloud) ListInstance() []Instance {
 }
 
 // CreateInstance create a instance on server Provider
-func (c *Cloud) CreateInstance(spec InstanceSpec) Instance {
-	return c.pool[spec.Provider].CreateInstance(spec)
+func (c *Cloud) CreateInstance(in Instance) Instance {
+	return c.pool[in.Provider].CreateInstance(in)
 }
 
 // InspectInstance show the instance and VPN service info
@@ -50,7 +63,7 @@ func (c *Cloud) InspectInstance(ID string) Instance {
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
 			if inst.ID == ID {
-				return c.pool[inst.InstanceSpec.Provider].InspectInstance(ID)
+				return c.pool[inst.Provider].InspectInstance(ID)
 			}
 		}
 	}
@@ -62,7 +75,7 @@ func (c *Cloud) DestroyInstance(ID string) {
 	for _, prvder := range c.pool {
 		for _, inst := range prvder.ListInstance() {
 			if inst.ID == ID {
-				c.pool[inst.InstanceSpec.Provider].DestroyInstance(ID)
+				c.pool[inst.Provider].DestroyInstance(ID)
 			}
 		}
 	}
