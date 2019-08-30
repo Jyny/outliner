@@ -5,6 +5,14 @@ type Cloud struct {
 	pool map[string]Provider
 }
 
+// CheckAvalible is Cloud Avalible
+func (c *Cloud) CheckAvalible() bool {
+	if len(c.pool) == 0 {
+		return false
+	}
+	return true
+}
+
 // RegisterProvider Register a cloud Provider whith Validater function
 func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 	for _, actvr := range actvrs {
