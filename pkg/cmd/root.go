@@ -11,9 +11,9 @@ import (
 
 	ol "github.com/jyny/outliner/pkg/outliner"
 
-	"github.com/jyny/outliner/pkg/cloud/digitalocean"
+	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
 	"github.com/jyny/outliner/pkg/cloud/linode"
-	"github.com/jyny/outliner/pkg/cloud/vultr"
+	//"github.com/jyny/outliner/pkg/cloud/vultr"
 )
 
 // Persistent Flags
@@ -26,8 +26,8 @@ var outliner = ol.New()
 
 var rootCmd = &cobra.Command{
 	Use:   "outliner",
-	Short: "Auto setup &deploy tool for outline VPN server",
-	Long:  "Auto setup &deploy tool for outline VPN server",
+	Short: "Auto setup & deploy tool for outline VPN server",
+	Long:  "Auto setup & deploy tool for outline VPN server",
 }
 
 // Execute entry of commandline
@@ -72,9 +72,9 @@ func initConfig() {
 	// Activate & register cloud providers
 	outliner.RegisterProvider(
 		validater,
-		digitalocean.Activator{},
+		//digitalocean.Activator{},
 		linode.Activator{},
-		vultr.Activator{},
+		//vultr.Activator{},
 	)
 
 }
