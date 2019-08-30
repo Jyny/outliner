@@ -60,15 +60,21 @@ func (p Provider) ListInstance() []ol.Instance {
 }
 
 func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
-	p.API.CreateInstance(
+	res, err := p.API.CreateInstance(
 		context.Background(),
 		linodego.InstanceCreateOptions{
 			Region:         in.Region.ID,
 			Type:           in.Spec.ID,
 			Tags:           []string{ol.InstanceTag},
-			AuthorizedKeys: []string{ol.SSHKeyName},
+			Image:          "linode/ubuntu18.04",
+			AuthorizedKeys: []string{},
+			RootPass:       "",
 		},
 	)
+	if err != nil {
+		fmt.Println("Create Instance Error", err)
+	}
+	fmt.Println(res)
 	return ol.Instance{}
 }
 
