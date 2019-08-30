@@ -26,8 +26,8 @@ var outliner = ol.New()
 
 var rootCmd = &cobra.Command{
 	Use:   "outliner",
-	Short: "outliner short",
-	Long:  `outliner long`,
+	Short: "Auto setup &deploy tool for outline VPN server",
+	Long:  "Auto setup &deploy tool for outline VPN server",
 }
 
 // Execute entry of commandline
@@ -40,7 +40,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "env", "E", "", "explicit config file path")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
 }
 
 func initConfig() {
