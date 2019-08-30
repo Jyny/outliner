@@ -1,5 +1,5 @@
 # Outliner
-Auto setup &deploy tool for outline VPN server
+Auto setup & deploy tool for outline VPN server
 
 ## Install
 

@@ -17,16 +17,16 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 }
 
 // LookupRegion show avalible Regions on Providers
-func (c *Cloud) LookupRegion() map[string][]string {
-	mapPrvderRegion := make(map[string][]string)
+func (c *Cloud) LookupRegion() map[string][]Region {
+	ret := make(map[string][]Region)
 	for _, prvder := range c.pool {
-		var regs []string
+		var regs []Region
 		for _, reg := range prvder.Region() {
 			regs = append(regs, reg)
 		}
-		mapPrvderRegion[prvder.Name()] = regs
+		ret[prvder.Name()] = regs
 	}
-	return mapPrvderRegion
+	return ret
 }
 
 // ListInstance list all instances create by outliner
