@@ -1,20 +1,50 @@
 # Outliner
-Auto deploy & setup tool for outline VPN server
+Auto setup & deploy tool for outline VPN server
 
 ## Install
 
 ## Usage
+## Configuration
+### Example
+#### 1. by config file (`.env` by default)
+* `~/.outliner/.env`
+```
+{TOKEN_NAME_1} = {TOKEN_VALUE_1}
+{TOKEN_NAME_2} = {TOKEN_VALUE_2}
+```
+
+#### 2. by Environment Variables
+```
+$ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
+```
+
+### support following config methods (by Precedence order)
+1. with flag `-F, --file {FILE_PATH}`
+2. Environment variables
+3. `.env` file at `~/.outliner/`
+4. `.env` file at `~/`
+5. `.env` file at `./`
+
+### supported `{TOKEN_NAME}`
+find in `pkg/cloud/{ProviderNmae}/activator.go` 
+```
+var tokenNames = []string{
+    "SUPPORTED_TOKEN_NAME_1",
+    "SUPPORTED_TOKEN_NAME_2",
+    ...
+}
+```
 
 ## Development & Build
-#### install depend package
+1. install depend package
 ```
-make mod
+$ make mod
 ```
-#### build binary
+2. build binary
 ```
-make build
+$ make build
 ```
-#### run
+3. run
 ```
-./outliner
+$ ./outliner
 ```

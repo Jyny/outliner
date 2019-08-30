@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -15,6 +13,6 @@ var lookupCmd = &cobra.Command{
 	Short: "lookup available regiens",
 	Long:  `lookup available regiens`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("%+v", outliner.LookupRegion())
+		printRegions(outliner.LookupRegion())
 	},
 }

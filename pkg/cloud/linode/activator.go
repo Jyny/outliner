@@ -42,6 +42,7 @@ func (a Activator) VerifyToken(token string) bool {
 	if err != nil {
 		return false
 	}
+	a.API_TOEKN = token
 	return true
 }
 
