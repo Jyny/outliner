@@ -10,6 +10,7 @@ func init() {
 	listCmd.AddCommand(instCmd)
 	listCmd.AddCommand(specCmd)
 	listCmd.AddCommand(regineCmd)
+	listCmd.AddCommand(providerCmd)
 	rootCmd.AddCommand(listCmd)
 }
 
@@ -33,15 +34,24 @@ var regineCmd = &cobra.Command{
 	Short: "list available regiens",
 	Long:  `list available regiens`,
 	Run: func(cmd *cobra.Command, args []string) {
-		printRegions(outliner.LookupRegion())
+		printRegions(outliner.ListRegion())
 	},
 }
 
 var specCmd = &cobra.Command{
 	Use:   "spec",
-	Short: "list available regiens",
-	Long:  `list available regiens`,
+	Short: "list available specs",
+	Long:  `list available specs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		printSpecs(outliner.LookupSpec())
+		printSpecs(outliner.ListSpec())
+	},
+}
+
+var providerCmd = &cobra.Command{
+	Use:   "provider",
+	Short: "list available providers",
+	Long:  `list available providers`,
+	Run: func(cmd *cobra.Command, args []string) {
+		printProvider(outliner.ListProvider())
 	},
 }

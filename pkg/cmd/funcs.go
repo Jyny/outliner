@@ -15,7 +15,7 @@ func validater(actvr ol.Activator) (ol.Provider, error) {
 	for _, tokenName := range actvr.ListTokenName() {
 		token := viper.GetString(tokenName)
 		if actvr.VerifyToken(token) {
-			return actvr.GenProvider(), nil
+			return actvr.GenProvider(token), nil
 		}
 	}
 	return nil, errors.New("invalid tokens")
@@ -62,6 +62,23 @@ func printSpecs(in map[string][]ol.Spec) {
 		"SpecID",
 		"Transfer",
 		"Price",
+	})
+	table.SetAutoMergeCells(true)
+	table.SetRowLine(true)
+	table.AppendBulk(data)
+	table.Render()
+}
+
+func printProvider(in []string) {
+	var data [][]string
+	for _, p := range in {
+		data = append(data, []string{
+			p,
+		})
+	}
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{
+		"Provider",
 	})
 	table.SetAutoMergeCells(true)
 	table.SetRowLine(true)

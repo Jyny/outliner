@@ -16,8 +16,8 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 	}
 }
 
-// LookupSpec show avalible Specs on Providers
-func (c *Cloud) LookupSpec() map[string][]Spec {
+// ListRegion show avalible Specs on Providers
+func (c *Cloud) ListSpec() map[string][]Spec {
 	ret := make(map[string][]Spec)
 	for _, prvder := range c.pool {
 		var specs []Spec
@@ -29,8 +29,8 @@ func (c *Cloud) LookupSpec() map[string][]Spec {
 	return ret
 }
 
-// LookupRegion show avalible Regions on Providers
-func (c *Cloud) LookupRegion() map[string][]Region {
+// ListRegion show avalible Regions on Providers
+func (c *Cloud) ListRegion() map[string][]Region {
 	ret := make(map[string][]Region)
 	for _, prvder := range c.pool {
 		var regs []Region
@@ -38,6 +38,15 @@ func (c *Cloud) LookupRegion() map[string][]Region {
 			regs = append(regs, reg)
 		}
 		ret[prvder.Name()] = regs
+	}
+	return ret
+}
+
+// ListProvider show avalible Providers
+func (c *Cloud) ListProvider() []string {
+	var ret []string
+	for _, prvder := range c.pool {
+		ret = append(ret, prvder.Name())
 	}
 	return ret
 }

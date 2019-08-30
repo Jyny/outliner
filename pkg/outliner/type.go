@@ -6,9 +6,9 @@ type Validater func(Activator) (Provider, error)
 
 // Activator object before generate a Provider
 type Activator interface {
-	ListTokenName() []string // list Token names for register
-	VerifyToken(string) bool // verify api key & availability
-	GenProvider() Provider   // Gen a Provider
+	ListTokenName() []string     // list Token names for register
+	VerifyToken(string) bool     // verify api key & availability
+	GenProvider(string) Provider // Gen a Provider
 }
 
 // Provider defin server provider methods
