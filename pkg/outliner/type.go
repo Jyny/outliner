@@ -14,7 +14,7 @@ type Activator interface {
 // Provider defin server provider methods
 type Provider interface { // new a provider
 	Name() string                     // provider's name
-	ListSpec() []InstanceSpec         // list provider Instance Spec
+	ListSpec() []Spec                 // list provider Instance Spec
 	ListRegion() []Region             // list provider's available regions
 	ListInstance() []Instance         // list created instance on provider
 	CreateInstance(Instance) Instance // create instance on provider
@@ -24,11 +24,11 @@ type Provider interface { // new a provider
 
 // Instance info about server create on server provider
 type Instance struct {
-	ID           string
-	Provider     string
-	InstanceSpec InstanceSpec
-	Region       Region
-	APICert      APICert
+	ID       string
+	Provider string
+	Spec     Spec
+	Region   Region
+	APICert  APICert
 }
 
 // Region info about Region
@@ -37,8 +37,8 @@ type Region struct {
 	Note string
 }
 
-// InstanceSpec info about server sepc
-type InstanceSpec struct {
+// Spec info about server sepc
+type Spec struct {
 	ID       string
 	Transfer string
 	Price    string

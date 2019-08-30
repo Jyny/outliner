@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
 func init() {
@@ -15,6 +15,13 @@ var createCmd = &cobra.Command{
 	Short: "create a server",
 	Long:  `create a server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create")
+		outliner.CreateInstance(ol.Instance{
+			Region: ol.Region{
+				ID: "",
+			},
+			Spec: ol.Spec{
+				ID: "",
+			},
+		})
 	},
 }

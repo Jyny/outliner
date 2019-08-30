@@ -17,10 +17,10 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 }
 
 // LookupSpec show avalible Specs on Providers
-func (c *Cloud) LookupSpec() map[string][]InstanceSpec {
-	ret := make(map[string][]InstanceSpec)
+func (c *Cloud) LookupSpec() map[string][]Spec {
+	ret := make(map[string][]Spec)
 	for _, prvder := range c.pool {
-		var specs []InstanceSpec
+		var specs []Spec
 		for _, spec := range prvder.ListSpec() {
 			specs = append(specs, spec)
 		}

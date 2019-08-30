@@ -44,7 +44,7 @@ func printRegions(in map[string][]ol.Region) {
 	table.Render()
 }
 
-func printSpecs(in map[string][]ol.InstanceSpec) {
+func printSpecs(in map[string][]ol.Spec) {
 	var data [][]string
 	for pname, p := range in {
 		for _, s := range p {

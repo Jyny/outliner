@@ -19,7 +19,7 @@ func (p Provider) Name() string {
 	return providerName
 }
 
-func (p Provider) Region() []ol.Region {
+func (p Provider) ListRegion() []ol.Region {
 	var ret []ol.Region
 	res, err := p.API.ListRegions(context.Background(), nil)
 	if err != nil {
@@ -35,11 +35,40 @@ func (p Provider) Region() []ol.Region {
 	return ret
 }
 
+func (p Provider) ListSpec() []ol.Spec {
+	var ret []ol.Spec
+	res, err := p.API.ListTypes(context.Background(), nil)
+	if err != nil {
+		fmt.Println("List Spec Error", err)
+	}
+	for _, r := range res {
+		if r.Price.Monthly > 50 {
+			continue
+		}
+		s := ol.Spec{
+			ID:       r.ID,
+			Transfer: fmt.Sprint(r.Transfer),
+			Price:    fmt.Sprint(r.Price.Monthly),
+		}
+		ret = append(ret, s)
+	}
+	return ret
+}
+
 func (p Provider) ListInstance() []ol.Instance {
 	return make([]ol.Instance, 0)
 }
 
-func (p Provider) CreateInstance(ol.InstanceSpec) ol.Instance {
+func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
+	p.API.CreateInstance(
+		context.Background(),
+		linodego.InstanceCreateOptions{
+			Region:         in.Region.ID,
+			Type:           in.Spec.ID,
+			Tags:           []string{ol.InstanceTag},
+			AuthorizedKeys: []string{ol.SSHKeyName},
+		},
+	)
 	return ol.Instance{}
 }
 
