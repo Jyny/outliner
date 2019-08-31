@@ -7,6 +7,7 @@ import (
 )
 
 func init() {
+	listCmd.AddCommand(infoCmd)
 	listCmd.AddCommand(instCmd)
 	listCmd.AddCommand(specCmd)
 	listCmd.AddCommand(regineCmd)
@@ -18,6 +19,16 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list following [command]",
 	Long:  `list following things`,
+}
+
+var infoCmd = &cobra.Command{
+	Use:   "info",
+	Short: "list information needed by create",
+	Long:  `list information needed by create`,
+	Run: func(cmd *cobra.Command, args []string) {
+		specCmd.Run(specCmd, []string{})
+		regineCmd.Run(regineCmd, []string{})
+	},
 }
 
 var instCmd = &cobra.Command{
