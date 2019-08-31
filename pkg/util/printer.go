@@ -107,27 +107,27 @@ func ContinueInteractive() bool {
 }
 
 func PrintCreateInstanceStart() {
-	log.Println("[Creating Instance]")
+	log.Println("[Creating Server]")
 }
 
 func PrintCreateInstanceWait() {
-	log.Println("[Wait Instance to startup]")
+	log.Println("[Wait Server to startup]")
 }
 
 func PrintCreateInstanceDone() {
-	log.Println("[Instance Created]")
+	log.Println("[Server Created]")
 }
 
 func PrintDestroyInstanceStart() {
-	log.Println("[Destroying Instance]")
+	log.Println("[Destroying Server]")
 }
 
 func PrintDestroyInstanceDone() {
-	log.Println("[Instance Destroid]")
+	log.Println("[Server Destroid]")
 }
 
 func PrintDeployInstanceStart() {
-	log.Println("[Deploying Instance]")
+	log.Println("[Deploying Server]")
 }
 
 func PrintDeployInstanceWait() {
@@ -135,5 +135,5 @@ func PrintDeployInstanceWait() {
 }
 
 func PrintDeployInstanceDone() {
-	log.Println("[Instance Deployed]")
+	log.Println("[Server Deployed]")
 }

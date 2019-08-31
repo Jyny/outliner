@@ -8,16 +8,16 @@ import (
 )
 
 func init() {
-	deployCmd.Flags().StringP("ip", "i", "", "IP address of instance (required)")
+	deployCmd.Flags().StringP("ip", "i", "", "IP address of Server (required)")
 	deployCmd.MarkFlagRequired("ip")
 	viper.BindPFlag("ip", deployCmd.Flags().Lookup("ip"))
-	rootCmd.AddCommand(destroyCmd)
+	rootCmd.AddCommand(deployCmd)
 }
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
-	Short: "deploy vpn to instance",
-	Long:  `deploy vpn to instance`,
+	Short: "deploy outliner to Server",
+	Long:  `deploy outliner to Server`,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		util.PrintDeployInstanceStart()
 	},

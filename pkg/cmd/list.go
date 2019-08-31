@@ -21,9 +21,9 @@ var listCmd = &cobra.Command{
 }
 
 var instCmd = &cobra.Command{
-	Use:   "instance",
-	Short: "list active instances(servers)",
-	Long:  `list active instances(servers)`,
+	Use:   "server",
+	Short: "list active Servers",
+	Long:  `list active Servers`,
 	Run: func(cmd *cobra.Command, args []string) {
 		insts, err := outliner.ListInstance()
 		if err != nil {

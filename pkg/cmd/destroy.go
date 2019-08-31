@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	destroyCmd.Flags().StringP("id", "i", "", "ID of instance (required)")
+	destroyCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
 	destroyCmd.MarkFlagRequired("id")
 	viper.BindPFlag("id", destroyCmd.Flags().Lookup("id"))
 	rootCmd.AddCommand(destroyCmd)
@@ -16,8 +16,8 @@ func init() {
 
 var destroyCmd = &cobra.Command{
 	Use:   "destroy",
-	Short: "destroy a instance",
-	Long:  `destroy a instance`,
+	Short: "destroy a Server",
+	Long:  `destroy a Server`,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		util.PrintDestroyInstanceStart()
 	},

@@ -9,9 +9,9 @@ import (
 )
 
 func init() {
-	createCmd.Flags().StringP("spec", "s", "", "Spec of instance (required)")
-	createCmd.Flags().StringP("region", "r", "", "region of instance (required)")
-	createCmd.Flags().StringP("provider", "p", "", "Provider of instance (required)")
+	createCmd.Flags().StringP("spec", "s", "", "Spec of Server (required)")
+	createCmd.Flags().StringP("region", "r", "", "region of Server (required)")
+	createCmd.Flags().StringP("provider", "p", "", "Provider of Server (required)")
 	createCmd.MarkFlagRequired("spec")
 	createCmd.MarkFlagRequired("region")
 	createCmd.MarkFlagRequired("provider")
@@ -23,8 +23,8 @@ func init() {
 
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "create a server",
-	Long:  `create a server`,
+	Short: "create a Server",
+	Long:  `create a Server`,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		util.PrintCreateInstanceStart()
 	},

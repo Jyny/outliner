@@ -6,8 +6,8 @@ import (
 )
 
 func init() {
-	inspectCmd.Flags().StringP("id", "i", "", "ID of instance (required)")
-	inspectCmd.Flags().StringP("provider", "p", "", "Provider of instance (required)")
+	inspectCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
+	inspectCmd.Flags().StringP("provider", "p", "", "Provider of Server (required)")
 	inspectCmd.MarkFlagRequired("id")
 	viper.BindPFlag("id", destroyCmd.Flags().Lookup("id"))
 	rootCmd.AddCommand(inspectCmd)
@@ -15,8 +15,8 @@ func init() {
 
 var inspectCmd = &cobra.Command{
 	Use:   "inspect",
-	Short: "inspect server",
-	Long:  `inspect server`,
+	Short: "inspect Server",
+	Long:  `inspect Server`,
 	Run: func(cmd *cobra.Command, args []string) {
 		id := viper.GetString("id")
 		_, err := outliner.InspectInstance(id)
