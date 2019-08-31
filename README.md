@@ -11,10 +11,11 @@ Usage:
   outliner [command]
 
 Available Commands:
-  create      create a server
-  destroy     destroy a server
+  create      create a Server
+  deploy      deploy outliner to Server
+  destroy     destroy a Server
   help        Help about any command
-  inspect     inspect server
+  inspect     inspect Server
   list        list following [command]
 
 Flags:
