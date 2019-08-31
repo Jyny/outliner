@@ -13,13 +13,13 @@ type Activator interface {
 
 // Provider defin server provider methods
 type Provider interface { // new a provider
-	Name() string                     // provider's name
-	ListSpec() []Spec                 // list provider Instance Spec
-	ListRegion() []Region             // list provider's available regions
-	ListInstance() []Instance         // list created instance on provider
-	CreateInstance(Instance) Instance // create instance on provider
-	InspectInstance(string) Instance  // get info about instance and vpn
-	DestroyInstance(string)           // destroy instance on provider
+	Name() string                              // provider's name
+	ListSpec() ([]Spec, error)                 // list provider Instance Spec
+	ListRegion() ([]Region, error)             // list provider's available regions
+	ListInstance() ([]Instance, error)         // list created instance on provider
+	CreateInstance(Instance) (Instance, error) // create instance on provider
+	InspectInstance(string) (Instance, error)  // get info about instance and vpn
+	DestroyInstance(string) error              // destroy instance on provider
 }
 
 // Instance info about server create on server provider

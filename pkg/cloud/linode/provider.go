@@ -2,6 +2,7 @@ package linode
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/linode/linodego"
@@ -20,11 +21,11 @@ func (p Provider) Name() string {
 	return providerName
 }
 
-func (p Provider) ListRegion() []ol.Region {
+func (p Provider) ListRegion() ([]ol.Region, error) {
 	var ret []ol.Region
 	res, err := p.API.ListRegions(context.Background(), nil)
 	if err != nil {
-		fmt.Println("Finding Region Error", err)
+		return ret, err
 	}
 	for _, r := range res {
 		t := ol.Region{
@@ -33,14 +34,14 @@ func (p Provider) ListRegion() []ol.Region {
 		}
 		ret = append(ret, t)
 	}
-	return ret
+	return ret, nil
 }
 
-func (p Provider) ListSpec() []ol.Spec {
+func (p Provider) ListSpec() ([]ol.Spec, error) {
 	var ret []ol.Spec
 	res, err := p.API.ListTypes(context.Background(), nil)
 	if err != nil {
-		fmt.Println("List Spec Error", err)
+		return ret, err
 	}
 	for _, r := range res {
 		if r.Price.Monthly > 50 {
@@ -53,16 +54,15 @@ func (p Provider) ListSpec() []ol.Spec {
 		}
 		ret = append(ret, s)
 	}
-	return ret
+	return ret, nil
 }
 
-func (p Provider) ListInstance() []ol.Instance {
+func (p Provider) ListInstance() ([]ol.Instance, error) {
 	var ret []ol.Instance
 	res, err := p.API.ListInstances(context.Background(), nil)
 	if err != nil {
-		fmt.Println("List Instances Error", err)
+		return ret, err
 	}
-
 	for _, i := range res {
 		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
 			continue
@@ -79,11 +79,10 @@ func (p Provider) ListInstance() []ol.Instance {
 			},
 		})
 	}
-
-	return ret
+	return ret, err
 }
 
-func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
+func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 	res, err := p.API.CreateInstance(
 		context.Background(),
 		linodego.InstanceCreateOptions{
@@ -96,7 +95,16 @@ func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
 		},
 	)
 	if err != nil {
-		fmt.Println("Create Instance Error", err)
+		return ol.Instance{}, err
+	}
+	_, err = p.API.WaitForInstanceStatus(
+		context.Background(),
+		res.ID,
+		"running",
+		120,
+	)
+	if err != nil {
+		return ol.Instance{}, err
 	}
 
 	// Todo
@@ -111,17 +119,17 @@ func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
 		Region: ol.Region{
 			ID: res.Region,
 		},
-	}
+	}, nil
 }
 
-func (p Provider) InspectInstance(string) ol.Instance {
-	return ol.Instance{}
+func (p Provider) InspectInstance(string) (ol.Instance, error) {
+	return ol.Instance{}, errors.New("Instance Not Found")
 }
 
-func (p Provider) DestroyInstance(id string) {
+func (p Provider) DestroyInstance(id string) error {
 	res, err := p.API.ListInstances(context.Background(), nil)
 	if err != nil {
-		fmt.Println("Fining Instances Error", err)
+		return err
 	}
 
 	for _, i := range res {
@@ -134,8 +142,10 @@ func (p Provider) DestroyInstance(id string) {
 				i.ID,
 			)
 			if err != nil {
-				fmt.Println("Destroy Instance Error", err)
+				return err
 			}
+			return nil
 		}
 	}
+	return errors.New("Instance Not Found")
 }

@@ -76,9 +76,8 @@ func initConfig() {
 		//vultr.Activator{},
 	)
 
-	if !outliner.CheckAvalible() {
-		fmt.Println("No avalible Provider")
-		fmt.Println("Check `.env` config or Network Status")
-		os.Exit(1)
+	err = outliner.CheckAvalible()
+	if err != nil {
+		panic(err)
 	}
 }

@@ -38,7 +38,7 @@ Use "outliner [command] --help" for more information about a command.
 $ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
 ```
 
-### support following config methods (by Precedence order)
+### support following config methods (list by Precedence order)
 1. with flag `-F, --file {FILE_PATH}`
 2. Environment variables
 3. `.env` file at `~/.outliner/`
