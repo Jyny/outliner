@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+
+	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -34,7 +36,7 @@ var regineCmd = &cobra.Command{
 	Short: "list available regiens",
 	Long:  `list available regiens`,
 	Run: func(cmd *cobra.Command, args []string) {
-		printRegions(outliner.ListRegion())
+		util.PrintRegions(outliner.ListRegion())
 	},
 }
 
@@ -43,7 +45,7 @@ var specCmd = &cobra.Command{
 	Short: "list available specs",
 	Long:  `list available specs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		printSpecs(outliner.ListSpec())
+		util.PrintSpecs(outliner.ListSpec())
 	},
 }
 
@@ -52,6 +54,6 @@ var providerCmd = &cobra.Command{
 	Short: "list available providers",
 	Long:  `list available providers`,
 	Run: func(cmd *cobra.Command, args []string) {
-		printProvider(outliner.ListProvider())
+		util.PrintProvider(outliner.ListProvider())
 	},
 }

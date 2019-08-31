@@ -7,6 +7,7 @@ require (
 	github.com/linode/linodego v0.10.0
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/olekukonko/tablewriter v0.0.1
+	github.com/sethvargo/go-password v0.1.2
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.4.0
 	github.com/vultr/govultr v0.1.4

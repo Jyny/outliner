@@ -7,6 +7,7 @@ import (
 	"github.com/linode/linodego"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
+	"github.com/jyny/outliner/pkg/util"
 )
 
 var providerName = "Linode"
@@ -60,6 +61,7 @@ func (p Provider) ListInstance() []ol.Instance {
 }
 
 func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
+	p.API.SetDebug(true)
 	res, err := p.API.CreateInstance(
 		context.Background(),
 		linodego.InstanceCreateOptions{
@@ -67,8 +69,8 @@ func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
 			Type:           in.Spec.ID,
 			Tags:           []string{ol.InstanceTag},
 			Image:          "linode/ubuntu18.04",
-			AuthorizedKeys: []string{},
-			RootPass:       "",
+			AuthorizedKeys: []string{util.GetSSHauthorizedKey()},
+			RootPass:       util.GenRandomPasswd(),
 		},
 	)
 	if err != nil {

@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"os"
 	"os/user"
-	"path"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	ol "github.com/jyny/outliner/pkg/outliner"
-
 	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
 	"github.com/jyny/outliner/pkg/cloud/linode"
 	//"github.com/jyny/outliner/pkg/cloud/vultr"
+
+	ol "github.com/jyny/outliner/pkg/outliner"
+	"github.com/jyny/outliner/pkg/util"
 )
 
 // Persistent Flags
@@ -52,7 +53,7 @@ func initConfig() {
 	viper.SetConfigName("")
 
 	// search from possible paths
-	viper.AddConfigPath(path.Join(u.HomeDir, "/.outliner/"))
+	viper.AddConfigPath(filepath.Join(u.HomeDir, "/.outliner/"))
 	viper.AddConfigPath(u.HomeDir)
 	viper.AddConfigPath(".")
 
@@ -69,7 +70,7 @@ func initConfig() {
 
 	// Activate & register cloud providers
 	outliner.RegisterProvider(
-		validater,
+		util.Validater,
 		//digitalocean.Activator{},
 		linode.Activator{},
 		//vultr.Activator{},

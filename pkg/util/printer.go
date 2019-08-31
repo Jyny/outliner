@@ -1,27 +1,14 @@
-package cmd
+package util
 
 import (
-	"errors"
 	"os"
 
 	"github.com/olekukonko/tablewriter"
 
-	"github.com/spf13/viper"
-
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-func validater(actvr ol.Activator) (ol.Provider, error) {
-	for _, tokenName := range actvr.ListTokenName() {
-		token := viper.GetString(tokenName)
-		if actvr.VerifyToken(token) {
-			return actvr.GenProvider(token), nil
-		}
-	}
-	return nil, errors.New("invalid tokens")
-}
-
-func printRegions(in map[string][]ol.Region) {
+func PrintRegions(in map[string][]ol.Region) {
 	var data [][]string
 	for pname, p := range in {
 		for _, r := range p {
@@ -44,7 +31,7 @@ func printRegions(in map[string][]ol.Region) {
 	table.Render()
 }
 
-func printSpecs(in map[string][]ol.Spec) {
+func PrintSpecs(in map[string][]ol.Spec) {
 	var data [][]string
 	for pname, p := range in {
 		for _, s := range p {
@@ -69,7 +56,7 @@ func printSpecs(in map[string][]ol.Spec) {
 	table.Render()
 }
 
-func printProvider(in []string) {
+func PrintProvider(in []string) {
 	var data [][]string
 	for _, p := range in {
 		data = append(data, []string{
