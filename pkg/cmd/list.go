@@ -25,7 +25,11 @@ var instCmd = &cobra.Command{
 	Short: "list active instances(servers)",
 	Long:  `list active instances(servers)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.PrintListInstances(outliner.ListInstance())
+		insts, err := outliner.ListInstance()
+		if err != nil {
+			panic(err)
+		}
+		util.PrintInstancesTable(insts)
 	},
 }
 
@@ -34,7 +38,11 @@ var regineCmd = &cobra.Command{
 	Short: "list available regiens",
 	Long:  `list available regiens`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.PrintRegions(outliner.ListRegion())
+		regs, err := outliner.ListRegion()
+		if err != nil {
+			panic(err)
+		}
+		util.PrintRegionsTable(regs)
 	},
 }
 
@@ -43,7 +51,11 @@ var specCmd = &cobra.Command{
 	Short: "list available specs",
 	Long:  `list available specs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.PrintSpecs(outliner.ListSpec())
+		specs, err := outliner.ListSpec()
+		if err != nil {
+			panic(err)
+		}
+		util.PrintSpecsTable(specs)
 	},
 }
 
@@ -52,6 +64,10 @@ var providerCmd = &cobra.Command{
 	Short: "list available providers",
 	Long:  `list available providers`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.PrintProvider(outliner.ListProvider())
+		pvdrs, err := outliner.ListProvider()
+		if err != nil {
+			panic(err)
+		}
+		util.PrintProvidersTable(pvdrs)
 	},
 }

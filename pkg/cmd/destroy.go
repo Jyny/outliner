@@ -20,8 +20,12 @@ var destroyCmd = &cobra.Command{
 	Short: "destroy a server",
 	Long:  `destroy a server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.PrintDestroyInstanceStart(viper.GetString("id"))
-		outliner.DestroyInstance(viper.GetString("id"))
-		util.PrintDestroyInstanceDone(viper.GetString("id"))
+		id := viper.GetString("id")
+		util.PrintDestroyInstanceStart(id)
+		err := outliner.DestroyInstance(id)
+		if err != nil {
+			panic(err)
+		}
+		util.PrintDestroyInstanceDone(id)
 	},
 }
