@@ -64,6 +64,9 @@ func (p Provider) ListInstance() []ol.Instance {
 	}
 
 	for _, i := range res {
+		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
+			continue
+		}
 		ret = append(ret, ol.Instance{
 			ID:       i.Label,
 			Provider: providerName,

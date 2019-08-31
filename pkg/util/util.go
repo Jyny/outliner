@@ -9,6 +9,15 @@ import (
 	"github.com/sethvargo/go-password/password"
 )
 
+func InSliceOfString(s []string, x string) bool {
+	for _, e := range s {
+		if x == e {
+			return true
+		}
+	}
+	return false
+}
+
 func GetSSHauthorizedKey() string {
 	// Read authorized ssh key
 	u, _ := user.Current()
