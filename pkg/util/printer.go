@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/olekukonko/tablewriter"
@@ -96,4 +97,20 @@ func PrintListInstances(in []ol.Instance) {
 	table.SetRowLine(true)
 	table.AppendBulk(data)
 	table.Render()
+}
+
+func PrintCreateInstanceStart() {
+	fmt.Println("[Creating Instance]")
+}
+
+func PrintCreateInstanceDone() {
+	fmt.Println("[Instance Created]")
+}
+
+func PrintDestroyInstanceStart(i string) {
+	fmt.Println("[Searching Instance]", i)
+}
+
+func PrintDestroyInstanceDone(i string) {
+	fmt.Println("[Instance Destroid]", i)
 }

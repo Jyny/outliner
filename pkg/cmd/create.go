@@ -5,14 +5,15 @@ import (
 	"github.com/spf13/viper"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
+	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
-	createCmd.Flags().StringP("spec", "S", "", "Spec of instance (required)")
-	createCmd.Flags().StringP("region", "R", "", "region of instance (required)")
-	createCmd.Flags().StringP("provider", "P", "", "Provider of instance (required)")
+	createCmd.Flags().StringP("spec", "s", "", "Spec of instance (required)")
+	createCmd.Flags().StringP("region", "r", "", "region of instance (required)")
+	createCmd.Flags().StringP("provider", "p", "", "Provider of instance (required)")
 	createCmd.MarkFlagRequired("spec")
-	createCmd.MarkFlagRequired("u")
+	createCmd.MarkFlagRequired("region")
 	createCmd.MarkFlagRequired("provider")
 	viper.BindPFlag("spec", createCmd.Flags().Lookup("spec"))
 	viper.BindPFlag("region", createCmd.Flags().Lookup("region"))
@@ -25,6 +26,7 @@ var createCmd = &cobra.Command{
 	Short: "create a server",
 	Long:  `create a server`,
 	Run: func(cmd *cobra.Command, args []string) {
+		util.PrintCreateInstanceStart()
 		outliner.CreateInstance(ol.Instance{
 			Provider: viper.GetString("provider"),
 			Region: ol.Region{
@@ -34,5 +36,6 @@ var createCmd = &cobra.Command{
 				ID: viper.GetString("spec"),
 			},
 		})
+		util.PrintCreateInstanceDone()
 	},
 }

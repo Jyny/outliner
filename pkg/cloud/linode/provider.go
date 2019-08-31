@@ -118,5 +118,24 @@ func (p Provider) InspectInstance(string) ol.Instance {
 	return ol.Instance{}
 }
 
-func (p Provider) DestroyInstance(string) {
+func (p Provider) DestroyInstance(id string) {
+	res, err := p.API.ListInstances(context.Background(), nil)
+	if err != nil {
+		fmt.Println("Fining Instances Error", err)
+	}
+
+	for _, i := range res {
+		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
+			continue
+		}
+		if i.Label == id {
+			err := p.API.DeleteInstance(
+				context.Background(),
+				i.ID,
+			)
+			if err != nil {
+				fmt.Println("Destroy Instance Error", err)
+			}
+		}
+	}
 }
