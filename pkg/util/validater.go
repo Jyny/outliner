@@ -1,4 +1,4 @@
-package cmd
+package util
 
 import (
 	"errors"
@@ -8,11 +8,11 @@ import (
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-func validater(actvr ol.Activator) (ol.Provider, error) {
+func Validater(actvr ol.Activator) (ol.Provider, error) {
 	for _, tokenName := range actvr.ListTokenName() {
 		token := viper.GetString(tokenName)
 		if actvr.VerifyToken(token) {
-			return actvr.GenProvider(), nil
+			return actvr.GenProvider(token), nil
 		}
 	}
 	return nil, errors.New("invalid tokens")

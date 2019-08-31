@@ -14,7 +14,6 @@ var tokenNames = []string{
 }
 
 type Activator struct {
-	API_TOEKN string
 }
 
 func (a Activator) ListTokenName() []string {

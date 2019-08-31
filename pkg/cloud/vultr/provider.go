@@ -24,7 +24,7 @@ func (p Provider) ListInstance() []ol.Instance {
 	return make([]ol.Instance, 0)
 }
 
-func (p Provider) CreateInstance(ol.InstanceSpec) ol.Instance {
+func (p Provider) CreateInstance(ol.Spec) ol.Instance {
 	return ol.Instance{}
 }
 

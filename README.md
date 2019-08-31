@@ -1,9 +1,29 @@
 # Outliner
-Auto setup &deploy tool for outline VPN server
+Auto setup & deploy tool for outline VPN server
 
 ## Install
 
 ## Usage
+```
+Auto setup & deploy tool for outline VPN server
+
+Usage:
+  outliner [command]
+
+Available Commands:
+  create      create a server
+  destroy     destroy a server
+  help        Help about any command
+  inspect     inspect server
+  list        list following [command]
+
+Flags:
+  -F, --file string   config file (default is $HOME/.outliner/.env)
+  -h, --help          help for outliner
+
+Use "outliner [command] --help" for more information about a command.
+```
+
 ## Configuration
 ### Example
 #### 1. by config file (`.env` by default)

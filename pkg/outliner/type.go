@@ -6,33 +6,43 @@ type Validater func(Activator) (Provider, error)
 
 // Activator object before generate a Provider
 type Activator interface {
-	ListTokenName() []string // list Token names for register
-	VerifyToken(string) bool // verify api key & availability
-	GenProvider() Provider   // Gen a Provider
+	ListTokenName() []string     // list Token names for register
+	VerifyToken(string) bool     // verify api key & availability
+	GenProvider(string) Provider // Gen a Provider
 }
 
 // Provider defin server provider methods
 type Provider interface { // new a provider
-	Name() string                         // provider's name
-	Region() []string                     // list provider's available regions
-	ListInstance() []Instance             // list created instance on provider
-	CreateInstance(InstanceSpec) Instance // create instance on provider
-	InspectInstance(string) Instance      // get info about instance and vpn
-	DestroyInstance(string)               // destroy instance on provider
+	Name() string                     // provider's name
+	ListSpec() []Spec                 // list provider Instance Spec
+	ListRegion() []Region             // list provider's available regions
+	ListInstance() []Instance         // list created instance on provider
+	CreateInstance(Instance) Instance // create instance on provider
+	InspectInstance(string) Instance  // get info about instance and vpn
+	DestroyInstance(string)           // destroy instance on provider
 }
 
 // Instance info about server create on server provider
 type Instance struct {
-	ID           string
-	InstanceSpec InstanceSpec
-	APICert      APICert
+	ID       string
+	Provider string
+	IPv4     string
+	Spec     Spec
+	Region   Region
+	APICert  APICert
 }
 
-// InstanceSpec info about server sepc
-type InstanceSpec struct {
-	Spec     string
-	Region   string
-	Provider string
+// Region info about Region
+type Region struct {
+	ID   string
+	Note string
+}
+
+// Spec info about server sepc
+type Spec struct {
+	ID       string
+	Transfer string
+	Price    string
 }
 
 // APICert info about VPN service on instance

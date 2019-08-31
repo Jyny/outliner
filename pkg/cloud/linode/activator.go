@@ -17,7 +17,6 @@ var tokenNames = []string{
 }
 
 type Activator struct {
-	API_TOEKN string
 }
 
 func (a Activator) ListTokenName() []string {
@@ -37,7 +36,6 @@ func (a Activator) VerifyToken(token string) bool {
 		},
 	)
 	_, err := linodeClient.GetProfile(context.Background())
-	linodeClient.SetDebug(true)
 
 	if err != nil {
 		return false
@@ -45,14 +43,14 @@ func (a Activator) VerifyToken(token string) bool {
 	return true
 }
 
-func (a Activator) GenProvider() ol.Provider {
+func (a Activator) GenProvider(verifiedToken string) ol.Provider {
 	return Provider{
-		linodego.NewClient(
+		API: linodego.NewClient(
 			&http.Client{
 				Transport: &oauth2.Transport{
 					Source: oauth2.StaticTokenSource(
 						&oauth2.Token{
-							AccessToken: a.API_TOEKN,
+							AccessToken: verifiedToken,
 						},
 					),
 				},
