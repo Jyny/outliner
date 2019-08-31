@@ -26,6 +26,7 @@ type Provider interface { // new a provider
 type Instance struct {
 	ID       string
 	Provider string
+	IPv4     string
 	Spec     Spec
 	Region   Region
 	APICert  APICert

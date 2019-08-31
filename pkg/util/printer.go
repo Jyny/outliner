@@ -72,3 +72,28 @@ func PrintProvider(in []string) {
 	table.AppendBulk(data)
 	table.Render()
 }
+
+func PrintListInstances(in []ol.Instance) {
+	var data [][]string
+	for _, i := range in {
+		data = append(data, []string{
+			i.Provider,
+			i.ID,
+			i.IPv4,
+			i.Region.ID,
+			i.Spec.ID,
+		})
+	}
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{
+		"Provider",
+		"ID",
+		"IP",
+		"Regien",
+		"Spec",
+	})
+	table.SetAutoMergeCells(true)
+	table.SetRowLine(true)
+	table.AppendBulk(data)
+	table.Render()
+}

@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
 	"github.com/jyny/outliner/pkg/util"
@@ -23,11 +21,11 @@ var listCmd = &cobra.Command{
 }
 
 var instCmd = &cobra.Command{
-	Use:   "server",
-	Short: "list active servers(instance)",
-	Long:  `list active servers(instance)`,
+	Use:   "instance",
+	Short: "list active instances(servers)",
+	Long:  `list active instances(servers)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("%+v", outliner.ListInstance())
+		util.PrintListInstances(outliner.ListInstance())
 	},
 }
 

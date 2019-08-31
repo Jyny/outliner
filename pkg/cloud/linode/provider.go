@@ -57,11 +57,30 @@ func (p Provider) ListSpec() []ol.Spec {
 }
 
 func (p Provider) ListInstance() []ol.Instance {
-	return make([]ol.Instance, 0)
+	var ret []ol.Instance
+	res, err := p.API.ListInstances(context.Background(), nil)
+	if err != nil {
+		fmt.Println("List Instances Error", err)
+	}
+
+	for _, i := range res {
+		ret = append(ret, ol.Instance{
+			ID:       i.Label,
+			Provider: providerName,
+			IPv4:     i.IPv4[0].String(),
+			Spec: ol.Spec{
+				ID: i.Type,
+			},
+			Region: ol.Region{
+				ID: i.Region,
+			},
+		})
+	}
+
+	return ret
 }
 
 func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
-	p.API.SetDebug(true)
 	res, err := p.API.CreateInstance(
 		context.Background(),
 		linodego.InstanceCreateOptions{
@@ -76,8 +95,20 @@ func (p Provider) CreateInstance(in ol.Instance) ol.Instance {
 	if err != nil {
 		fmt.Println("Create Instance Error", err)
 	}
-	fmt.Println(res)
-	return ol.Instance{}
+
+	// Todo
+
+	return ol.Instance{
+		ID:       res.Label,
+		Provider: providerName,
+		IPv4:     res.IPv4[0].String(),
+		Spec: ol.Spec{
+			ID: res.Type,
+		},
+		Region: ol.Region{
+			ID: res.Region,
+		},
+	}
 }
 
 func (p Provider) InspectInstance(string) ol.Instance {

@@ -24,7 +24,7 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 	}
 }
 
-// ListRegion show avalible Specs on Providers
+// ListSpec show avalible Specs on Providers
 func (c *Cloud) ListSpec() map[string][]Spec {
 	ret := make(map[string][]Spec)
 	for _, prvder := range c.pool {
