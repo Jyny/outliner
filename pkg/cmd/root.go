@@ -35,11 +35,9 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initProvider)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
-}
 
-func initConfig() {
 	u, err := user.Current()
 	if err != nil {
 		panic(err)
@@ -64,7 +62,9 @@ func initConfig() {
 
 	// load config file
 	viper.ReadInConfig()
+}
 
+func initProvider() {
 	// Activate & register cloud providers
 	outliner.RegisterProvider(
 		util.Validater,
@@ -73,7 +73,7 @@ func initConfig() {
 		//vultr.Activator{},
 	)
 
-	err = outliner.CheckAvalible()
+	err := outliner.CheckAvalible()
 	if err != nil {
 		panic(err)
 	}
