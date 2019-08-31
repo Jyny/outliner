@@ -9,7 +9,7 @@ import (
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-func PrintRegions(in map[string][]ol.Region) {
+func PrintRegionsTable(in map[string][]ol.Region) {
 	var data [][]string
 	for pname, p := range in {
 		for _, r := range p {
@@ -32,7 +32,7 @@ func PrintRegions(in map[string][]ol.Region) {
 	table.Render()
 }
 
-func PrintSpecs(in map[string][]ol.Spec) {
+func PrintSpecsTable(in map[string][]ol.Spec) {
 	var data [][]string
 	for pname, p := range in {
 		for _, s := range p {
@@ -57,7 +57,7 @@ func PrintSpecs(in map[string][]ol.Spec) {
 	table.Render()
 }
 
-func PrintProvider(in []string) {
+func PrintProvidersTable(in []string) {
 	var data [][]string
 	for _, p := range in {
 		data = append(data, []string{
@@ -74,7 +74,7 @@ func PrintProvider(in []string) {
 	table.Render()
 }
 
-func PrintListInstances(in []ol.Instance) {
+func PrintInstancesTable(in []ol.Instance) {
 	var data [][]string
 	for _, i := range in {
 		data = append(data, []string{

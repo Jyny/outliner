@@ -1,16 +1,20 @@
 package outliner
 
+import (
+	"errors"
+)
+
 // Cloud core object for outliner
 type Cloud struct {
 	pool map[string]Provider
 }
 
 // CheckAvalible is Cloud Avalible
-func (c *Cloud) CheckAvalible() bool {
+func (c *Cloud) CheckAvalible() error {
 	if len(c.pool) == 0 {
-		return false
+		return errors.New("No avalible Provider")
 	}
-	return true
+	return nil
 }
 
 // RegisterProvider Register a cloud Provider whith Validater function
@@ -25,75 +29,91 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 }
 
 // ListSpec show avalible Specs on Providers
-func (c *Cloud) ListSpec() map[string][]Spec {
+func (c *Cloud) ListSpec() (map[string][]Spec, error) {
 	ret := make(map[string][]Spec)
 	for _, prvder := range c.pool {
-		var specs []Spec
-		for _, spec := range prvder.ListSpec() {
-			specs = append(specs, spec)
+		specs, err := prvder.ListSpec()
+		if err != nil {
+			return ret, err
 		}
 		ret[prvder.Name()] = specs
 	}
-	return ret
+	return ret, nil
 }
 
 // ListRegion show avalible Regions on Providers
-func (c *Cloud) ListRegion() map[string][]Region {
+func (c *Cloud) ListRegion() (map[string][]Region, error) {
 	ret := make(map[string][]Region)
 	for _, prvder := range c.pool {
-		var regs []Region
-		for _, reg := range prvder.ListRegion() {
-			regs = append(regs, reg)
+		regs, err := prvder.ListRegion()
+		if err != nil {
+			return ret, err
 		}
 		ret[prvder.Name()] = regs
 	}
-	return ret
+	return ret, nil
 }
 
 // ListProvider show avalible Providers
-func (c *Cloud) ListProvider() []string {
+func (c *Cloud) ListProvider() ([]string, error) {
 	var ret []string
+	if len(c.pool) == 0 {
+		return ret, errors.New("No avalible Provider")
+	}
 	for _, prvder := range c.pool {
 		ret = append(ret, prvder.Name())
 	}
-	return ret
+	return ret, nil
 }
 
 // ListInstance list all instances create by outliner
-func (c *Cloud) ListInstance() []Instance {
+func (c *Cloud) ListInstance() ([]Instance, error) {
 	var ret []Instance
 	for _, prvder := range c.pool {
-		for _, inst := range prvder.ListInstance() {
+		insts, err := prvder.ListInstance()
+		if err != nil {
+			return ret, err
+		}
+		for _, inst := range insts {
 			ret = append(ret, inst)
 		}
 	}
-	return ret
+	return ret, nil
 }
 
 // CreateInstance create a instance on server Provider
-func (c *Cloud) CreateInstance(in Instance) Instance {
+func (c *Cloud) CreateInstance(in Instance) (Instance, error) {
 	return c.pool[in.Provider].CreateInstance(in)
 }
 
 // InspectInstance show the instance and VPN service info
-func (c *Cloud) InspectInstance(ID string) Instance {
+func (c *Cloud) InspectInstance(ID string) (Instance, error) {
 	for _, prvder := range c.pool {
-		for _, inst := range prvder.ListInstance() {
+		insts, err := prvder.ListInstance()
+		if err != nil {
+			return Instance{}, err
+		}
+		for _, inst := range insts {
 			if inst.ID == ID {
 				return c.pool[inst.Provider].InspectInstance(ID)
 			}
 		}
 	}
-	return Instance{}
+	return Instance{}, errors.New("Instance Not Found")
 }
 
 // DestroyInstance destroy a instanceon server Provider
-func (c *Cloud) DestroyInstance(ID string) {
+func (c *Cloud) DestroyInstance(ID string) error {
 	for _, prvder := range c.pool {
-		for _, inst := range prvder.ListInstance() {
+		insts, err := prvder.ListInstance()
+		if err != nil {
+			return err
+		}
+		for _, inst := range insts {
 			if inst.ID == ID {
-				c.pool[inst.Provider].DestroyInstance(ID)
+				return c.pool[inst.Provider].DestroyInstance(ID)
 			}
 		}
 	}
+	return errors.New("Instance Not Found")
 }
