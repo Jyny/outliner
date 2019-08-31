@@ -45,6 +45,7 @@ func (a Activator) VerifyToken(token string) bool {
 
 func (a Activator) GenProvider(verifiedToken string) ol.Provider {
 	return Provider{
+		verifiedToken: verifiedToken,
 		API: linodego.NewClient(
 			&http.Client{
 				Transport: &oauth2.Transport{

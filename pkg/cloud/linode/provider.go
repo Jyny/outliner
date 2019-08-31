@@ -14,11 +14,16 @@ import (
 var providerName = "Linode"
 
 type Provider struct {
-	API linodego.Client
+	verifiedToken string
+	API           linodego.Client
 }
 
 func (p Provider) Name() string {
 	return providerName
+}
+
+func (p Provider) GetToken() string {
+	return p.verifiedToken
 }
 
 func (p Provider) ListRegion() ([]ol.Region, error) {

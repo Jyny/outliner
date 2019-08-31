@@ -14,6 +14,7 @@ type Activator interface {
 // Provider defin server provider methods
 type Provider interface { // new a provider
 	Name() string                              // provider's name
+	GetToken() string                          // provider's verified Token
 	ListSpec() ([]Spec, error)                 // list provider Instance Spec
 	ListRegion() ([]Region, error)             // list provider's available regions
 	ListInstance() ([]Instance, error)         // list created instance on provider

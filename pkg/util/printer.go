@@ -57,16 +57,18 @@ func PrintSpecsTable(in map[string][]ol.Spec) {
 	table.Render()
 }
 
-func PrintProvidersTable(in []string) {
+func PrintProvidersTable(in [][]string) {
 	var data [][]string
 	for _, p := range in {
 		data = append(data, []string{
-			p,
+			p[0],
+			p[1],
 		})
 	}
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{
 		"Provider",
+		"API Token",
 	})
 	table.SetAutoMergeCells(true)
 	table.SetRowLine(true)
