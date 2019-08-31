@@ -1,9 +1,10 @@
 package util
 
 import (
-	"fmt"
+	"log"
 	"os"
 
+	"github.com/Songmu/prompter"
 	"github.com/olekukonko/tablewriter"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
@@ -57,16 +58,18 @@ func PrintSpecsTable(in map[string][]ol.Spec) {
 	table.Render()
 }
 
-func PrintProvidersTable(in []string) {
+func PrintProvidersTable(in [][]string) {
 	var data [][]string
 	for _, p := range in {
 		data = append(data, []string{
-			p,
+			p[0],
+			p[1],
 		})
 	}
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{
 		"Provider",
+		"API Token",
 	})
 	table.SetAutoMergeCells(true)
 	table.SetRowLine(true)
@@ -99,18 +102,38 @@ func PrintInstancesTable(in []ol.Instance) {
 	table.Render()
 }
 
+func ContinueInteractive() bool {
+	return prompter.YN("Do you want to continue to Auto Deploying", true)
+}
+
 func PrintCreateInstanceStart() {
-	fmt.Println("[Creating Instance]")
+	log.Println("[Creating Server]")
+}
+
+func PrintCreateInstanceWait() {
+	log.Println("[Wait Server to startup]")
 }
 
 func PrintCreateInstanceDone() {
-	fmt.Println("[Instance Created]")
+	log.Println("[Server Created]")
 }
 
-func PrintDestroyInstanceStart(i string) {
-	fmt.Println("[Searching Instance]", i)
+func PrintDestroyInstanceStart() {
+	log.Println("[Destroying Server]")
 }
 
-func PrintDestroyInstanceDone(i string) {
-	fmt.Println("[Instance Destroid]", i)
+func PrintDestroyInstanceDone() {
+	log.Println("[Server Destroid]")
+}
+
+func PrintDeployInstanceStart() {
+	log.Println("[Deploying Server]")
+}
+
+func PrintDeployInstanceWait() {
+	log.Println("[Wait deployment to completed]")
+}
+
+func PrintDeployInstanceDone() {
+	log.Println("[Server Deployed]")
 }

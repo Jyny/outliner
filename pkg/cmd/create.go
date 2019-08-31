@@ -9,9 +9,9 @@ import (
 )
 
 func init() {
-	createCmd.Flags().StringP("spec", "s", "", "Spec of instance (required)")
-	createCmd.Flags().StringP("region", "r", "", "region of instance (required)")
-	createCmd.Flags().StringP("provider", "p", "", "Provider of instance (required)")
+	createCmd.Flags().StringP("spec", "s", "", "Spec of Server (required)")
+	createCmd.Flags().StringP("region", "r", "", "region of Server (required)")
+	createCmd.Flags().StringP("provider", "p", "", "Provider of Server (required)")
 	createCmd.MarkFlagRequired("spec")
 	createCmd.MarkFlagRequired("region")
 	createCmd.MarkFlagRequired("provider")
@@ -23,11 +23,13 @@ func init() {
 
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "create a server",
-	Long:  `create a server`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Short: "create a Server",
+	Long:  `create a Server`,
+	PreRun: func(cmd *cobra.Command, args []string) {
 		util.PrintCreateInstanceStart()
-		_, err := outliner.CreateInstance(ol.Instance{
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		inst, err := outliner.CreateInstance(ol.Instance{
 			Provider: viper.GetString("provider"),
 			Region: ol.Region{
 				ID: viper.GetString("region"),
@@ -40,5 +42,13 @@ var createCmd = &cobra.Command{
 			panic(err)
 		}
 		util.PrintCreateInstanceDone()
+		util.PrintInstancesTable([]ol.Instance{inst})
+	},
+	PostRun: func(cmd *cobra.Command, args []string) {
+		if util.ContinueInteractive() {
+			deployCmd.PreRun(deployCmd, []string{})
+			deployCmd.Run(deployCmd, []string{})
+			deployCmd.PostRun(deployCmd, []string{})
+		}
 	},
 }

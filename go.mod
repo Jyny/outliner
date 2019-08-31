@@ -3,6 +3,7 @@ module github.com/jyny/outliner
 go 1.12
 
 require (
+	github.com/Songmu/prompter v0.2.0
 	github.com/digitalocean/godo v1.19.0
 	github.com/linode/linodego v0.10.0
 	github.com/mattn/go-runewidth v0.0.4 // indirect

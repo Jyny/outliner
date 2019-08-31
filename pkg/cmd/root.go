@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
 	"os/user"
 	"path/filepath"
 
@@ -32,17 +30,14 @@ var rootCmd = &cobra.Command{
 // Execute entry of commandline
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		panic(err)
 	}
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initProvider)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
-}
 
-func initConfig() {
 	u, err := user.Current()
 	if err != nil {
 		panic(err)
@@ -67,7 +62,9 @@ func initConfig() {
 
 	// load config file
 	viper.ReadInConfig()
+}
 
+func initProvider() {
 	// Activate & register cloud providers
 	outliner.RegisterProvider(
 		util.Validater,
@@ -76,7 +73,7 @@ func initConfig() {
 		//vultr.Activator{},
 	)
 
-	err = outliner.CheckAvalible()
+	err := outliner.CheckAvalible()
 	if err != nil {
 		panic(err)
 	}

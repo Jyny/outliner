@@ -55,13 +55,16 @@ func (c *Cloud) ListRegion() (map[string][]Region, error) {
 }
 
 // ListProvider show avalible Providers
-func (c *Cloud) ListProvider() ([]string, error) {
-	var ret []string
+func (c *Cloud) ListProvider() ([][]string, error) {
+	var ret [][]string
 	if len(c.pool) == 0 {
 		return ret, errors.New("No avalible Provider")
 	}
 	for _, prvder := range c.pool {
-		ret = append(ret, prvder.Name())
+		ret = append(ret, []string{
+			prvder.Name(),
+			prvder.GetToken(),
+		})
 	}
 	return ret, nil
 }

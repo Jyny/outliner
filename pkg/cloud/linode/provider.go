@@ -14,11 +14,16 @@ import (
 var providerName = "Linode"
 
 type Provider struct {
-	API linodego.Client
+	verifiedToken string
+	API           linodego.Client
 }
 
 func (p Provider) Name() string {
 	return providerName
+}
+
+func (p Provider) GetToken() string {
+	return p.verifiedToken
 }
 
 func (p Provider) ListRegion() ([]ol.Region, error) {
@@ -97,6 +102,7 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 	if err != nil {
 		return ol.Instance{}, err
 	}
+	util.PrintCreateInstanceWait()
 	_, err = p.API.WaitForInstanceStatus(
 		context.Background(),
 		res.ID,
@@ -106,8 +112,6 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 	if err != nil {
 		return ol.Instance{}, err
 	}
-
-	// Todo
 
 	return ol.Instance{
 		ID:       res.Label,
