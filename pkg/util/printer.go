@@ -1,9 +1,10 @@
 package util
 
 import (
-	"fmt"
+	"log"
 	"os"
 
+	"github.com/Songmu/prompter"
 	"github.com/olekukonko/tablewriter"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
@@ -101,18 +102,38 @@ func PrintInstancesTable(in []ol.Instance) {
 	table.Render()
 }
 
+func ContinueInteractive() bool {
+	return prompter.YN("Do you want to continue to Auto Deploying", true)
+}
+
 func PrintCreateInstanceStart() {
-	fmt.Println("[Creating Instance]")
+	log.Println("[Creating Instance]")
+}
+
+func PrintCreateInstanceWait() {
+	log.Println("[Wait Instance to startup]")
 }
 
 func PrintCreateInstanceDone() {
-	fmt.Println("[Instance Created]")
+	log.Println("[Instance Created]")
 }
 
-func PrintDestroyInstanceStart(i string) {
-	fmt.Println("[Searching Instance]", i)
+func PrintDestroyInstanceStart() {
+	log.Println("[Destroying Instance]")
 }
 
-func PrintDestroyInstanceDone(i string) {
-	fmt.Println("[Instance Destroid]", i)
+func PrintDestroyInstanceDone() {
+	log.Println("[Instance Destroid]")
+}
+
+func PrintDeployInstanceStart() {
+	log.Println("[Deploying Instance]")
+}
+
+func PrintDeployInstanceWait() {
+	log.Println("[Wait deployment to completed]")
+}
+
+func PrintDeployInstanceDone() {
+	log.Println("[Instance Deployed]")
 }

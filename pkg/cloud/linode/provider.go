@@ -102,6 +102,7 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 	if err != nil {
 		return ol.Instance{}, err
 	}
+	util.PrintCreateInstanceWait()
 	_, err = p.API.WaitForInstanceStatus(
 		context.Background(),
 		res.ID,
@@ -111,8 +112,6 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 	if err != nil {
 		return ol.Instance{}, err
 	}
-
-	// Todo
 
 	return ol.Instance{
 		ID:       res.Label,

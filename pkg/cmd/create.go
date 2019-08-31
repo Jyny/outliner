@@ -25,9 +25,11 @@ var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "create a server",
 	Long:  `create a server`,
-	Run: func(cmd *cobra.Command, args []string) {
+	PreRun: func(cmd *cobra.Command, args []string) {
 		util.PrintCreateInstanceStart()
-		_, err := outliner.CreateInstance(ol.Instance{
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		inst, err := outliner.CreateInstance(ol.Instance{
 			Provider: viper.GetString("provider"),
 			Region: ol.Region{
 				ID: viper.GetString("region"),
@@ -40,5 +42,13 @@ var createCmd = &cobra.Command{
 			panic(err)
 		}
 		util.PrintCreateInstanceDone()
+		util.PrintInstancesTable([]ol.Instance{inst})
+	},
+	PostRun: func(cmd *cobra.Command, args []string) {
+		if util.ContinueInteractive() {
+			deployCmd.PreRun(deployCmd, []string{})
+			deployCmd.Run(deployCmd, []string{})
+			deployCmd.PostRun(deployCmd, []string{})
+		}
 	},
 }
