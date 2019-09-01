@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log"
 
 	"github.com/jyny/outliner/pkg/util"
 )
@@ -10,7 +11,7 @@ import (
 func init() {
 	destroyCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
 	destroyCmd.MarkFlagRequired("id")
-	viper.BindPFlag("id", destroyCmd.Flags().Lookup("id"))
+	viper.BindPFlag("destroy_id", destroyCmd.Flags().Lookup("id"))
 	rootCmd.AddCommand(destroyCmd)
 }
 
@@ -22,7 +23,8 @@ var destroyCmd = &cobra.Command{
 		util.PrintDestroyInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		id := viper.GetString("id")
+		id := viper.GetString("destroy_id")
+		log.Println(id)
 		err := cloud.DestroyInstance(id)
 		if err != nil {
 			panic(err)

@@ -1,11 +1,14 @@
 package agent
 
 import (
+	"bytes"
 	"io/ioutil"
 	"log"
 	"os/user"
 	"path/filepath"
 	"strings"
+
+	"golang.org/x/crypto/ssh"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
@@ -35,8 +38,8 @@ func New() ol.Agent {
 
 	if certok {
 		return SecureShell{
-			credentialPub: strings.ReplaceAll(string(keypubBytes), "\n", ""),
-			credentialPvt: strings.ReplaceAll(string(keypvtBytes), "\n", ""),
+			credentialPub: strings.TrimRight(string(keypubBytes), "\n"),
+			credentialPvt: strings.TrimRight(string(keypvtBytes), "\n"),
 		}
 	}
 
@@ -48,6 +51,7 @@ func New() ol.Agent {
 }
 
 func genNewCredential() (string, string) {
+	// Todo
 	return "", ""
 }
 
@@ -56,6 +60,38 @@ func (s SecureShell) GetCredentialPub() string {
 }
 
 func (s SecureShell) Exec(ip string, cmd string) error {
+	signer, err := ssh.ParsePrivateKey([]byte(s.credentialPvt))
+	if err != nil {
+		return err
+	}
+
+	config := &ssh.ClientConfig{
+		User: "root",
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(signer),
+		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+	}
+
+	client, err := ssh.Dial("tcp", ip+":22", config)
+	if err != nil {
+		return err
+	}
+
+	session, err := client.NewSession()
+	if err != nil {
+		return err
+	}
+	defer session.Close()
+
+	var b bytes.Buffer
+	session.Stdout = &b
+	if err := session.Run(cmd); err != nil {
+		return err
+	}
+
+	log.Println(b.String())
+
 	return nil
 }
 

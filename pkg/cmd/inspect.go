@@ -11,7 +11,7 @@ import (
 func init() {
 	inspectCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
 	inspectCmd.MarkFlagRequired("id")
-	viper.BindPFlag("id", inspectCmd.Flags().Lookup("id"))
+	viper.BindPFlag("inspect_id", inspectCmd.Flags().Lookup("id"))
 	rootCmd.AddCommand(inspectCmd)
 }
 
@@ -20,7 +20,7 @@ var inspectCmd = &cobra.Command{
 	Short: "inspect Server",
 	Long:  `inspect Server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// id := viper.GetString("id")
+		// id := viper.GetString("inspect_id")
 		// util.PrintInstancesTable()
 		// util.PrintAPICertTable()
 		util.PrintAPICertJSON(ol.APICert{})
