@@ -8,7 +8,7 @@ build : .mod pregen
 
 .PHONY : pregen
 pregen :
-	@pushd pkg/runner > /dev/null && \
+	@pushd pkg/agent > /dev/null && \
 	go run gen/gen.go \
 	&& popd > /dev/null
 

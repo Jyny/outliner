@@ -22,10 +22,19 @@ var deployCmd = &cobra.Command{
 		util.PrintDeployInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		ip := viper.GetString("ip")
+		err := deployer.DeployService(ip)
+		if err != nil {
+			panic(err)
+		}
 		util.PrintDeployInstanceWait()
-		// Todo
+		err = deployer.WaitService(ip)
+		if err != nil {
+			panic(err)
+		}
+		util.PrintDeployInstanceDone()
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
-		util.PrintDeployInstanceDone()
+		inspectCmd.Run(inspectCmd, []string{})
 	},
 }

@@ -23,7 +23,7 @@ var destroyCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		id := viper.GetString("id")
-		err := outliner.DestroyInstance(id)
+		err := cloud.DestroyInstance(id)
 		if err != nil {
 			panic(err)
 		}

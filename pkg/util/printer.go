@@ -102,6 +102,26 @@ func PrintInstancesTable(in []ol.Instance) {
 	table.Render()
 }
 
+func PrintAPICertTable(in ol.APICert) {
+	var data [][]string
+	data = append(data, []string{
+		in.APIurl,
+		in.CertSha256,
+	})
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{
+		"APIurl",
+		"CertSha256",
+	})
+	table.SetAutoMergeCells(true)
+	table.SetRowLine(true)
+	table.AppendBulk(data)
+	table.Render()
+}
+
+func PrintAPICertJSON(in ol.APICert) {
+}
+
 func ContinueInteractive() bool {
 	return prompter.YN("Do you want to continue to Auto Deploying", true)
 }

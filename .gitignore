@@ -4,7 +4,7 @@
 # build
 /build/
 /bin/
-/pkg/runner/script_vfsdata.go
+/pkg/agent/script_vfsdata.go
 
 # test
 /test/

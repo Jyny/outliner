@@ -9,16 +9,11 @@ type Cloud struct {
 	pool map[string]Provider
 }
 
-// CheckAvalible is Cloud Avalible
-func (c *Cloud) CheckAvalible() error {
-	if len(c.pool) == 0 {
+// RegisterProvider Register a cloud Provider whith Validater function
+func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) error {
+	if len(actvrs) == 0 {
 		return errors.New("No avalible Provider")
 	}
-	return nil
-}
-
-// RegisterProvider Register a cloud Provider whith Validater function
-func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 	for _, actvr := range actvrs {
 		prvdr, err := validater(actvr)
 		if err != nil {
@@ -26,6 +21,7 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 		}
 		c.pool[prvdr.Name()] = prvdr
 	}
+	return nil
 }
 
 // ListSpec show avalible Specs on Providers
@@ -89,20 +85,9 @@ func (c *Cloud) CreateInstance(in Instance) (Instance, error) {
 	return c.pool[in.Provider].CreateInstance(in)
 }
 
-// InspectInstance show the instance and VPN service info
-func (c *Cloud) InspectInstance(ID string) (Instance, error) {
-	for _, prvder := range c.pool {
-		insts, err := prvder.ListInstance()
-		if err != nil {
-			return Instance{}, err
-		}
-		for _, inst := range insts {
-			if inst.ID == ID {
-				return c.pool[inst.Provider].InspectInstance(ID)
-			}
-		}
-	}
-	return Instance{}, errors.New("Instance Not Found")
+// WaitInstance wait instance to boot
+func (c Cloud) WaitInstance(in Instance) error {
+	return c.pool[in.Provider].WaitInstance(in)
 }
 
 // DestroyInstance destroy a instanceon server Provider

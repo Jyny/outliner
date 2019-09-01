@@ -1,11 +1,6 @@
 package util
 
 import (
-	"io/ioutil"
-	"os/user"
-	"path/filepath"
-	"strings"
-
 	"github.com/sethvargo/go-password/password"
 )
 
@@ -16,19 +11,6 @@ func InSliceOfString(s []string, x string) bool {
 		}
 	}
 	return false
-}
-
-func GetSSHauthorizedKey() string {
-	// Read authorized ssh key
-	u, _ := user.Current()
-	key := filepath.Join(u.HomeDir, "/.ssh/id_rsa.pub")
-	authorizedKeysBytes, err := ioutil.ReadFile(key)
-	if err != nil {
-		panic(err)
-	}
-	authorizedKey := strings.ReplaceAll(string(authorizedKeysBytes), "\n", "")
-
-	return authorizedKey
 }
 
 func GenRandomPasswd() string {
