@@ -23,8 +23,8 @@ func (d Deployer) DeployService(ip string) error {
 }
 
 // WaitService wait service
-func (d Deployer) WaitService(string) error {
-	return nil
+func (d Deployer) WaitService(ip string) error {
+	return d.agent.Watch(ip)
 }
 
 // GetServiceCert get service cert

@@ -1,13 +1,17 @@
 package agent
 
 import (
+	"bufio"
 	"bytes"
+	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os/user"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -133,14 +137,16 @@ func (s SecureShell) Deploy(ip string) error {
 
 	// runscript
 	cmd := "chmod +x " + ScriptName
-	log.Println("[Running]", cmd)
+	log.Println("[Deploy init]", cmd)
 	err = runscript(conn, cmd)
 	if err != nil {
 		return err
 	}
 
-	cmd = "nohup bash " + filepath.Join("/root/", ScriptName) + " &> /tmp/out &"
-	log.Println("[Running]", cmd)
+	cmd = "nohup bash "
+	cmd += filepath.Join("/root/", ScriptName)
+	cmd += " &> /tmp/out &"
+	log.Println("[Deploy init]", cmd)
 	err = runscript(conn, cmd)
 	if err != nil {
 		return err
@@ -165,22 +171,85 @@ func (s SecureShell) Watch(ip string) error {
 
 	conn, err := ssh.Dial("tcp", ip+":22", config)
 	if err != nil {
-		return err
+		log.Println(err)
 	}
 
 	session, err := conn.NewSession()
 	if err != nil {
-		return err
+		log.Println(err)
 	}
 	defer session.Close()
 
-	var b bytes.Buffer
-	session.Stdout = &b
-	if err := session.Run("whoami"); err != nil {
+	stdin, err := session.StdinPipe()
+	if err != nil {
+		return err
+	}
+	stdout, err := session.StdoutPipe()
+	if err != nil {
 		return err
 	}
 
-	log.Println(b.String())
+	if err := session.Shell(); err != nil {
+		log.Println(err)
+	}
 
-	return nil
+	// watch deploy stdout
+	cmd := "tail -f /tmp/out"
+	_, err = fmt.Fprintf(stdin, "%s\n", cmd)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	line := make(chan string)
+	go func(stdout io.Reader) {
+		reader := bufio.NewReader(stdout)
+		for {
+			linebyte, condition, err := reader.ReadLine()
+			if err != nil {
+				log.Println(err)
+			}
+			newline := string(linebyte)
+			for condition {
+				linebyte, condition, err = reader.ReadLine()
+				if err != nil {
+					log.Println(err)
+				}
+				newline += string(linebyte)
+			}
+			line <- newline
+		}
+	}(stdout)
+
+	// wait deploy done
+	done := make(chan bool)
+	go func(*ssh.ClientConfig) {
+		conn, err := ssh.Dial("tcp", ip+":22", config)
+		if err != nil {
+			log.Println(err)
+		}
+
+		session, err := conn.NewSession()
+		if err != nil {
+			log.Println(err)
+		}
+		defer session.Close()
+
+		cmd := "while kill -0 \"$(cat /tmp/pid)\" &> /dev/null; do sleep 1; done;"
+		if err := session.Run(cmd); err != nil {
+			log.Println(err)
+		}
+
+		done <- true
+	}(config)
+
+	for {
+		select {
+		case out := <-line:
+			log.Println("[Deploy running]", out)
+		case <-time.After(1 * time.Minute):
+			return errors.New("Watch Deploy Timeout")
+		case <-done:
+			return nil
+		}
+	}
 }

@@ -2,6 +2,7 @@ package util
 
 import (
 	"github.com/sethvargo/go-password/password"
+	"time"
 )
 
 func InSliceOfString(s []string, x string) bool {
@@ -21,4 +22,8 @@ func GenRandomPasswd() string {
 		panic(err)
 	}
 	return rpwd
+}
+
+func Waitforawhile() {
+	time.Sleep(10 * time.Second)
 }
