@@ -16,7 +16,7 @@ import (
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/jyny/outliner/pkg/agent/constdef"
+	"github.com/jyny/outliner/pkg/agent/consts"
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
@@ -73,13 +73,13 @@ func (s SecureShell) sendscript(conn *ssh.Client) error {
 	}
 	defer client.Close()
 
-	srcFile, err := Script.Open(constdef.ScriptName)
+	srcFile, err := Script.Open(consts.ScriptName)
 	if err != nil {
 		return err
 	}
 	defer srcFile.Close()
 
-	dstFile, err := client.Create(filepath.Join("/root/", constdef.ScriptName))
+	dstFile, err := client.Create(filepath.Join("/root/", consts.ScriptName))
 	if err != nil {
 		return err
 	}
@@ -144,7 +144,7 @@ func (s SecureShell) Deploy(ip string) error {
 	log.Println("[Deploy script uploaded]")
 
 	// runscript
-	cmd := "chmod +x " + constdef.ScriptName
+	cmd := "chmod +x " + consts.ScriptName
 	log.Println("[Deploy init]", cmd)
 	err = s.runscript(conn, cmd)
 	if err != nil {
@@ -152,7 +152,7 @@ func (s SecureShell) Deploy(ip string) error {
 	}
 
 	cmd = "nohup bash "
-	cmd += filepath.Join("/root/", constdef.ScriptName)
+	cmd += filepath.Join("/root/", consts.ScriptName)
 	cmd += " &> /tmp/out &"
 	log.Println("[Deploy init]", cmd)
 	err = s.runscript(conn, cmd)

@@ -1,4 +1,4 @@
-package constdef
+package consts
 
 // DeployScriptPath for gen vfsdata
 const DeployScriptPath = "./script/"

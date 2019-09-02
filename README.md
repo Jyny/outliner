@@ -1,9 +1,10 @@
 # Outliner
 Auto setup & deploy tool for outline VPN server
 
-## Install
+## Download and Install
 
 ## Usage
+[![asciicast](https://asciinema.org/a/265622.svg)](https://asciinema.org/a/265622)
 ```
 Auto setup & deploy tool for outline VPN server
 

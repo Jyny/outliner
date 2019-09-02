@@ -54,8 +54,8 @@ var createCmd = &cobra.Command{
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
 		if util.ContinueInteractive() {
-			util.Waitforawhile()
 			deployCmd.PreRun(deployCmd, []string{})
+			util.Waitforawhile()
 			deployCmd.Run(deployCmd, []string{})
 			deployCmd.PostRun(deployCmd, []string{})
 		}
