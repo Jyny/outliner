@@ -1,7 +1,10 @@
 package agent
 
 // DeployScriptPath for gen vfsdata
-const DeployScriptPath = "./script/deploy.sh"
+const DeployScriptPath = "./script/"
+
+// ScriptName for gen vfsdata
+const ScriptName = "./deploy.sh"
 
 // VariableName for gen vfsdata
 const VariableName = "Script"

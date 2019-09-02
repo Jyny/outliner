@@ -26,7 +26,7 @@ type Provider interface { // new a provider
 // Agent defin deply Agent methods
 type Agent interface {
 	GetCredentialPub() string
-	Exec(string, string) error
+	Deploy(string) error
 	Watch(string) error
 }
 

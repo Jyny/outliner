@@ -19,7 +19,7 @@ func (d Deployer) GetCredentialPub() string {
 
 // DeployService deploy service
 func (d Deployer) DeployService(ip string) error {
-	return d.agent.Exec(ip, "whoami")
+	return d.agent.Deploy(ip)
 }
 
 // WaitService wait service
