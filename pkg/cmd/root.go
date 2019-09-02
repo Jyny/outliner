@@ -70,6 +70,7 @@ func initOutliner() {
 	// add new agent to deployer
 	deployer.Init(agent.New())
 
+func initProvider() {
 	// Activate & register cloud providers
 	err := cloud.RegisterProvider(
 		util.Validater,

@@ -30,6 +30,7 @@ var createCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		inst, err := cloud.CreateInstance(ol.Instance{
+
 			Provider: viper.GetString("provider"),
 			SSHKey:   deployer.GetCredentialPub(),
 			Region: ol.Region{
