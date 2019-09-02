@@ -1,4 +1,4 @@
-package agent
+package constdef
 
 // DeployScriptPath for gen vfsdata
 const DeployScriptPath = "./script/"

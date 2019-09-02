@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/jyny/outliner/pkg/agent"
+	"github.com/jyny/outliner/pkg/agent/constdef"
 	"github.com/shurcooL/vfsgen"
 	"log"
 	"net/http"
 )
 
 func main() {
-	fs := http.Dir(agent.DeployScriptPath)
+	fs := http.Dir(constdef.DeployScriptPath)
 	opt := vfsgen.Options{
-		PackageName:  agent.PackageName,
-		VariableName: agent.VariableName,
+		PackageName:  constdef.PackageName,
+		VariableName: constdef.VariableName,
 	}
 	err := vfsgen.Generate(fs, opt)
 	if err != nil {
