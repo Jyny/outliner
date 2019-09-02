@@ -7,19 +7,21 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/jyny/outliner/pkg/agent"
+	ol "github.com/jyny/outliner/pkg/outliner"
+	"github.com/jyny/outliner/pkg/util"
+
 	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
 	"github.com/jyny/outliner/pkg/cloud/linode"
 	//"github.com/jyny/outliner/pkg/cloud/vultr"
-
-	ol "github.com/jyny/outliner/pkg/outliner"
-	"github.com/jyny/outliner/pkg/util"
 )
 
 // Persistent Flags
 var cfgFile string
 
-// Persistent outliner for other commends
-var outliner = ol.New()
+// Persistent for commends
+var cloud = ol.NewCloud()
+var deployer = ol.NewDeployer()
 
 var rootCmd = &cobra.Command{
 	Use:   "outliner",
@@ -35,7 +37,7 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initProvider)
+	cobra.OnInitialize(initOutliner)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
 
 	u, err := user.Current()
@@ -64,16 +66,18 @@ func init() {
 	viper.ReadInConfig()
 }
 
+func initOutliner() {
+	// add new agent to deployer
+	deployer.Init(agent.New())
+
 func initProvider() {
 	// Activate & register cloud providers
-	outliner.RegisterProvider(
+	err := cloud.RegisterProvider(
 		util.Validater,
 		//digitalocean.Activator{},
 		linode.Activator{},
 		//vultr.Activator{},
 	)
-
-	err := outliner.CheckAvalible()
 	if err != nil {
 		panic(err)
 	}

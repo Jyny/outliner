@@ -36,7 +36,7 @@ var instCmd = &cobra.Command{
 	Short: "list active Servers",
 	Long:  `list active Servers`,
 	Run: func(cmd *cobra.Command, args []string) {
-		insts, err := outliner.ListInstance()
+		insts, err := cloud.ListInstance()
 		if err != nil {
 			panic(err)
 		}
@@ -49,7 +49,7 @@ var regineCmd = &cobra.Command{
 	Short: "list available regiens",
 	Long:  `list available regiens`,
 	Run: func(cmd *cobra.Command, args []string) {
-		regs, err := outliner.ListRegion()
+		regs, err := cloud.ListRegion()
 		if err != nil {
 			panic(err)
 		}
@@ -62,7 +62,7 @@ var specCmd = &cobra.Command{
 	Short: "list available specs",
 	Long:  `list available specs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		specs, err := outliner.ListSpec()
+		specs, err := cloud.ListSpec()
 		if err != nil {
 			panic(err)
 		}
@@ -75,7 +75,7 @@ var providerCmd = &cobra.Command{
 	Short: "list available providers",
 	Long:  `list available providers`,
 	Run: func(cmd *cobra.Command, args []string) {
-		pvdrs, err := outliner.ListProvider()
+		pvdrs, err := cloud.ListProvider()
 		if err != nil {
 			panic(err)
 		}
