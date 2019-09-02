@@ -95,9 +95,19 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 			Type:           in.Spec.ID,
 			Tags:           []string{ol.InstanceTag},
 			Image:          "linode/ubuntu18.04",
-			AuthorizedKeys: []string{in.SSHKey},
+			AuthorizedKeys: []string{util.GetSSHauthorizedKey()},
 			RootPass:       util.GenRandomPasswd(),
 		},
+	)
+	if err != nil {
+		return ol.Instance{}, err
+	}
+	util.PrintCreateInstanceWait()
+	_, err = p.API.WaitForInstanceStatus(
+		context.Background(),
+		res.ID,
+		"running",
+		120,
 	)
 	if err != nil {
 		return ol.Instance{}, err
@@ -116,29 +126,8 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 	}, nil
 }
 
-func (p Provider) WaitInstance(in ol.Instance) error {
-	res, err := p.API.ListInstances(context.Background(), nil)
-	if err != nil {
-		return err
-	}
-	for _, i := range res {
-		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
-			continue
-		}
-		if i.Label == in.ID {
-			_, err = p.API.WaitForInstanceStatus(
-				context.Background(),
-				i.ID,
-				"running",
-				120,
-			)
-			if err != nil {
-				return err
-			}
-			return nil
-		}
-	}
-	return errors.New("Instance Not Found")
+func (p Provider) InspectInstance(string) (ol.Instance, error) {
+	return ol.Instance{}, errors.New("Instance Not Found")
 }
 
 func (p Provider) DestroyInstance(id string) error {

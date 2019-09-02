@@ -1,16 +1,10 @@
-build : .mod pregen
+build : .mod
 	gofmt -w ./
 	go build
 
 .mod :
 	go mod download
 	touch .mod
-
-.PHONY : pregen
-pregen :
-	@pushd pkg/agent > /dev/null && \
-	go run gen/gen.go \
-	&& popd > /dev/null
 
 .PHONY : mod
 mod :
