@@ -9,11 +9,16 @@ type Cloud struct {
 	pool map[string]Provider
 }
 
-// RegisterProvider Register a cloud Provider whith Validater function
-func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) error {
-	if len(actvrs) == 0 {
+// CheckAvalible is Cloud Avalible
+func (c *Cloud) CheckAvalible() error {
+	if len(c.pool) == 0 {
 		return errors.New("No avalible Provider")
 	}
+	return nil
+}
+
+// RegisterProvider Register a cloud Provider whith Validater function
+func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) {
 	for _, actvr := range actvrs {
 		prvdr, err := validater(actvr)
 		if err != nil {
@@ -21,7 +26,6 @@ func (c *Cloud) RegisterProvider(validater Validater, actvrs ...Activator) error
 		}
 		c.pool[prvdr.Name()] = prvdr
 	}
-	return nil
 }
 
 // ListSpec show avalible Specs on Providers
@@ -85,12 +89,7 @@ func (c *Cloud) CreateInstance(in Instance) (Instance, error) {
 	return c.pool[in.Provider].CreateInstance(in)
 }
 
-// WaitInstance wait instance to boot
-func (c Cloud) WaitInstance(in Instance) error {
-	return c.pool[in.Provider].WaitInstance(in)
-}
-
-// InspectInstance Inspect Instance
+// InspectInstance show the instance and VPN service info
 func (c *Cloud) InspectInstance(ID string) (Instance, error) {
 	for _, prvder := range c.pool {
 		insts, err := prvder.ListInstance()
@@ -99,7 +98,7 @@ func (c *Cloud) InspectInstance(ID string) (Instance, error) {
 		}
 		for _, inst := range insts {
 			if inst.ID == ID {
-				return inst, nil
+				return c.pool[inst.Provider].InspectInstance(ID)
 			}
 		}
 	}

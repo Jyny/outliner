@@ -29,10 +29,8 @@ var createCmd = &cobra.Command{
 		util.PrintCreateInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		inst, err := cloud.CreateInstance(ol.Instance{
-
+		inst, err := outliner.CreateInstance(ol.Instance{
 			Provider: viper.GetString("provider"),
-			SSHKey:   deployer.GetCredentialPub(),
 			Region: ol.Region{
 				ID: viper.GetString("region"),
 			},
@@ -43,19 +41,11 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintCreateInstanceWait()
-		err = cloud.WaitInstance(inst)
-		if err != nil {
-			panic(err)
-		}
 		util.PrintCreateInstanceDone()
 		util.PrintInstancesTable([]ol.Instance{inst})
-		viper.Set("ip", inst.IPv4)
-		viper.Set("id", inst.ID)
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
 		if util.ContinueInteractive() {
-			util.Waitforawhile()
 			deployCmd.PreRun(deployCmd, []string{})
 			deployCmd.Run(deployCmd, []string{})
 			deployCmd.PostRun(deployCmd, []string{})

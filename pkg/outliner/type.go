@@ -19,16 +19,8 @@ type Provider interface { // new a provider
 	ListRegion() ([]Region, error)             // list provider's available regions
 	ListInstance() ([]Instance, error)         // list created instance on provider
 	CreateInstance(Instance) (Instance, error) // create instance on provider
-	WaitInstance(Instance) error               // get info about instance and vpn
+	InspectInstance(string) (Instance, error)  // get info about instance and vpn
 	DestroyInstance(string) error              // destroy instance on provider
-}
-
-// Agent defin deply Agent methods
-type Agent interface {
-	GetCredentialPub() string
-	Deploy(string) error
-	Watch(string) error
-	GetServiceCert(string) (APICert, error)
 }
 
 // Instance info about server create on server provider
@@ -38,7 +30,6 @@ type Instance struct {
 	IPv4     string
 	Spec     Spec
 	Region   Region
-	SSHKey   string
 	APICert  APICert
 }
 
@@ -57,6 +48,6 @@ type Spec struct {
 
 // APICert info about VPN service on instance
 type APICert struct {
-	APIurl     string `json:"apiUrl"`
-	CertSha256 string `json:"certSha256"`
+	APIurl     string
+	CertSha256 string
 }
