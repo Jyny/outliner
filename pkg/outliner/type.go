@@ -28,6 +28,7 @@ type Agent interface {
 	GetCredentialPub() string
 	Deploy(string) error
 	Watch(string) error
+	GetServiceCert(string) (APICert, error)
 }
 
 // Instance info about server create on server provider
@@ -56,6 +57,6 @@ type Spec struct {
 
 // APICert info about VPN service on instance
 type APICert struct {
-	APIurl     string
-	CertSha256 string
+	APIurl     string `json:"apiUrl"`
+	CertSha256 string `json:"certSha256"`
 }

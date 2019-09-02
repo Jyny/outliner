@@ -28,6 +28,6 @@ func (d Deployer) WaitService(ip string) error {
 }
 
 // GetServiceCert get service cert
-func (d Deployer) GetServiceCert(string) (APICert, error) {
-	return APICert{}, nil
+func (d Deployer) GetServiceCert(ip string) (APICert, error) {
+	return d.agent.GetServiceCert(ip)
 }

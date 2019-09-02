@@ -1,10 +1,13 @@
 package util
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/Songmu/prompter"
+	. "github.com/logrusorgru/aurora"
 	"github.com/olekukonko/tablewriter"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
@@ -120,6 +123,19 @@ func PrintAPICertTable(in ol.APICert) {
 }
 
 func PrintAPICertJSON(in ol.APICert) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("CONGRATULATIONS! Your Outline server is up and running.")
+	fmt.Println()
+	fmt.Println("To manage your Outline server, please copy the following line")
+	fmt.Println("(including curly brackets) into Step 2 of the Outline Manager interface:")
+	fmt.Println()
+	fmt.Println(Green(string(b)))
+	fmt.Println()
 }
 
 func ContinueInteractive() bool {

@@ -6,6 +6,7 @@ require (
 	github.com/Songmu/prompter v0.2.0
 	github.com/digitalocean/godo v1.19.0
 	github.com/linode/linodego v0.10.0
+	github.com/logrusorgru/aurora v0.0.0-20190803045625-94edacc10f9b
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/olekukonko/tablewriter v0.0.1
 	github.com/pkg/sftp v1.10.1

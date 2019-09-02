@@ -20,9 +20,17 @@ var inspectCmd = &cobra.Command{
 	Short: "inspect Server",
 	Long:  `inspect Server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// id := viper.GetString("id")
-		// util.PrintInstancesTable()
-		// util.PrintAPICertTable()
-		util.PrintAPICertJSON(ol.APICert{})
+		id := viper.GetString("id")
+		inst, err := cloud.InspectInstance(id)
+		if err != nil {
+			panic(err)
+		}
+		apicert, err := deployer.GetServiceCert(inst.IPv4)
+		if err != nil {
+			panic(err)
+		}
+		util.PrintInstancesTable([]ol.Instance{inst})
+		util.PrintAPICertTable(apicert)
+		util.PrintAPICertJSON(apicert)
 	},
 }

@@ -65,7 +65,7 @@ func (s SecureShell) GetCredentialPub() string {
 	return s.credentialPub
 }
 
-func sendscript(conn *ssh.Client) error {
+func (s SecureShell) sendscript(conn *ssh.Client) error {
 	client, err := sftp.NewClient(conn)
 	if err != nil {
 		return err
@@ -92,15 +92,12 @@ func sendscript(conn *ssh.Client) error {
 	return nil
 }
 
-func runscript(conn *ssh.Client, cmd string) error {
+func (s SecureShell) runscript(conn *ssh.Client, cmd string) error {
 	session, err := conn.NewSession()
 	if err != nil {
 		return err
 	}
 	defer session.Close()
-
-	var b bytes.Buffer
-	session.Stdout = &b
 
 	if err := session.Run(cmd); err != nil {
 		return err
@@ -109,27 +106,37 @@ func runscript(conn *ssh.Client, cmd string) error {
 	return nil
 }
 
-func (s SecureShell) Deploy(ip string) error {
+func (s SecureShell) sshconfig() (*ssh.ClientConfig, error) {
 	signer, err := ssh.ParsePrivateKey([]byte(s.credentialPvt))
 	if err != nil {
-		return err
+		return &ssh.ClientConfig{}, err
 	}
 
-	config := &ssh.ClientConfig{
+	return &ssh.ClientConfig{
 		User: "root",
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-	}
+	}, nil
+}
 
-	conn, err := ssh.Dial("tcp", ip+":22", config)
+func (s SecureShell) sshconn(ip string) (*ssh.Client, error) {
+	config, err := s.sshconfig()
+	if err != nil {
+		return &ssh.Client{}, err
+	}
+	return ssh.Dial("tcp", ip+":22", config)
+}
+
+func (s SecureShell) Deploy(ip string) error {
+	conn, err := s.sshconn(ip)
 	if err != nil {
 		return err
 	}
 
 	// sendscript
-	err = sendscript(conn)
+	err = s.sendscript(conn)
 	if err != nil {
 		return err
 	}
@@ -138,7 +145,7 @@ func (s SecureShell) Deploy(ip string) error {
 	// runscript
 	cmd := "chmod +x " + ScriptName
 	log.Println("[Deploy init]", cmd)
-	err = runscript(conn, cmd)
+	err = s.runscript(conn, cmd)
 	if err != nil {
 		return err
 	}
@@ -147,7 +154,7 @@ func (s SecureShell) Deploy(ip string) error {
 	cmd += filepath.Join("/root/", ScriptName)
 	cmd += " &> /tmp/out &"
 	log.Println("[Deploy init]", cmd)
-	err = runscript(conn, cmd)
+	err = s.runscript(conn, cmd)
 	if err != nil {
 		return err
 	}
@@ -156,27 +163,14 @@ func (s SecureShell) Deploy(ip string) error {
 }
 
 func (s SecureShell) Watch(ip string) error {
-	signer, err := ssh.ParsePrivateKey([]byte(s.credentialPvt))
+	conn, err := s.sshconn(ip)
 	if err != nil {
 		return err
 	}
 
-	config := &ssh.ClientConfig{
-		User: "root",
-		Auth: []ssh.AuthMethod{
-			ssh.PublicKeys(signer),
-		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-	}
-
-	conn, err := ssh.Dial("tcp", ip+":22", config)
-	if err != nil {
-		log.Println(err)
-	}
-
 	session, err := conn.NewSession()
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 	defer session.Close()
 
@@ -190,7 +184,7 @@ func (s SecureShell) Watch(ip string) error {
 	}
 
 	if err := session.Shell(); err != nil {
-		log.Println(err)
+		return err
 	}
 
 	// watch deploy stdout
@@ -222,8 +216,8 @@ func (s SecureShell) Watch(ip string) error {
 
 	// wait deploy done
 	done := make(chan bool)
-	go func(*ssh.ClientConfig) {
-		conn, err := ssh.Dial("tcp", ip+":22", config)
+	go func(ip string) {
+		conn, err := s.sshconn(ip)
 		if err != nil {
 			log.Println(err)
 		}
@@ -240,7 +234,7 @@ func (s SecureShell) Watch(ip string) error {
 		}
 
 		done <- true
-	}(config)
+	}(ip)
 
 	for {
 		select {
@@ -252,4 +246,37 @@ func (s SecureShell) Watch(ip string) error {
 			return nil
 		}
 	}
+}
+
+func (s SecureShell) GetServiceCert(ip string) (ol.APICert, error) {
+	conn, err := s.sshconn(ip)
+	if err != nil {
+		return ol.APICert{}, err
+	}
+
+	session, err := conn.NewSession()
+	if err != nil {
+		return ol.APICert{}, err
+	}
+	defer session.Close()
+
+	var b bytes.Buffer
+	session.Stdout = &b
+
+	cmd := "cat /opt/outline/access.txt"
+	if err := session.Run(cmd); err != nil {
+		log.Println(err)
+	}
+
+	var ret ol.APICert
+	for _, e := range strings.Split(b.String(), "\n") {
+		f := strings.Split(e, ":")
+		if f[0] == "certSha256" {
+			ret.CertSha256 = f[1]
+		}
+		if f[0] == "apiUrl" {
+			ret.APIurl = f[1] + ":" + f[2] + ":" + f[3]
+		}
+	}
+	return ret, nil
 }

@@ -90,6 +90,22 @@ func (c Cloud) WaitInstance(in Instance) error {
 	return c.pool[in.Provider].WaitInstance(in)
 }
 
+// InspectInstance Inspect Instance
+func (c *Cloud) InspectInstance(ID string) (Instance, error) {
+	for _, prvder := range c.pool {
+		insts, err := prvder.ListInstance()
+		if err != nil {
+			return Instance{}, err
+		}
+		for _, inst := range insts {
+			if inst.ID == ID {
+				return inst, nil
+			}
+		}
+	}
+	return Instance{}, errors.New("Instance Not Found")
+}
+
 // DestroyInstance destroy a instanceon server Provider
 func (c *Cloud) DestroyInstance(ID string) error {
 	for _, prvder := range c.pool {
