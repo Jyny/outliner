@@ -1,8 +1,9 @@
 # Outliner
-**Auto setup & deploy tool for outline VPN server**
+**CLI tool for Auto setup and deploy outline VPN**
 
 [![asciicast](https://asciinema.org/a/265622.svg)](https://asciinema.org/a/265622)
 ```
+$ outliner --help
 Auto setup & deploy tool for outline VPN server
 
 Usage:
@@ -25,58 +26,71 @@ Use "outliner [command] --help" for more information about a command.
 ```
 
 ## Contents
-- [Download and Install](#download-and-install)
-- [Configuration](#configuration)
-  - [Steps](#steps)
-  - [Basic](#basic)
-    - [config by `.env` file](#config-by-env-file)
-    - [config by Environment Variables](#config-by-environment-variables)
-  - [Other configuration source](#other-configuration-source)
-  - [supported `TOKEN_NAME`](#supported-token_name)
+- [Download](#download)
+- [Setup](#setup)
+  - [1. Get `API_TOKEN`](#1-get-api_token)
+  - [2. Make a `.env` config file](#2-make-a-env-config-file)
+  - [3. Generate ssh key](#3-generate-ssh-key)
+  - [4. Ready to go](#4-ready-to-go)
+- [Usage](#usage)
+- [Configurations](#configurations)
+  - [config by `.env` file](#config-by-env-file)
+  - [config by Environment Variables](#config-by-environment-variables)
+  - [Support `TOKEN_NAME`](#support-token_name)
+  - [Support configuration source](#support-configuration-source)
+- [Support Cloud(IaaS)](#support-cloudiaas)
 - [Development and Build](#development-and-build)
 
 ## Download
-#### * OSX
-[https://github.com/Jyny/outliner/releases/download/v0.1/outliner_darwin](https://github.com/Jyny/outliner/releases/download/v0.1/outliner_darwin)
+download from latest [release](https://github.com/Jyny/outliner/releases/latest)
 
-#### * Linux
-[https://github.com/Jyny/outliner/releases/download/v0.1/outliner_linux](https://github.com/Jyny/outliner/releases/download/v0.1/outliner_linux)
+## Setup
+##### 1. Get `API_TOKEN`
+get `API_TOKEN` from cloud providers you want, like `Linode`, `DigitalOcean` and etc.
 
-#### * Windlows
-[https://github.com/Jyny/outliner/releases/download/v0.1/outliner_windows.exe](https://github.com/Jyny/outliner/releases/download/v0.1/outliner_windows.exe)
+##### 2. Make a `.env` config file
+write the `API_TOKEN` to `.env` file whith `TOKEN_NAME` [like this](#config-by-env-file).
+Reference the  [Support `TOKEN_NAME`](#supported-token_name) below.
 
-## Configuration
-### Steps
-1.  you will need `API-TOKEN` from cloud providers, like `Linode`, `DigitalOcean` and etc.
+##### 3. Generate SSH key
+outliner support auto generate ssh key, if Not found `id_rsa` and `id_rsa.pub` in `$HOME/.ssh/`.
+[ssh library package](https://godoc.org/golang.org/x/crypto/ssh) outliner use, is implement by golang.org
+run any command in outliner will do this after asking.
+```
+$ outliner help
+Continue to Generate New ssh key? (y/n) [y]:
+```
+To generate key by yourself, see [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/enterprise/2.16/user/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
-2. write `.env` config file, [refer to the following](config-by-env-file)
+##### 4. Ready to go
+* open terminal, go directory whrere you download outliner
+* maybe should add execute permission to binary (linux or mac)
+* `$ ./build/outliner_{OS}`
 
-### Basic
-following is two of config method in easiest way
-
-#### config by `.env` file
+## Configurations
+### config by `.env` file
 * `~/.outliner/.env`
 ```
-{TOKEN_NAME_1} = {TOKEN_VALUE_1}
-{TOKEN_NAME_2} = {TOKEN_VALUE_2}
+TOKEN_NAME_1 = TOKEN_VALUE_1
+TOKEN_NAME_2 = TOKEN_VALUE_2
+...
 ```
 
-#### config by Environment Variables
+### config by Environment Variables
 ```
 $ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
 ```
 
-### Other configuration source
-Support the following configuration source (list by Precedence order)
+### Support `TOKEN_NAME`
+| Provider     | TOKEN_NAME         | 
+| -------------|--------------------|
+| Linode       | `LINODE_TOKEN`     |
+| Linode       | `LINODE_CLI_TOKEN` |
+| Linode       | `LINODE_API_TOKEN` |
+| Digitalocean |                    |
+| Vultr        |                    |
 
-1. with flag `-F, --file {FILE_PATH}`
-2. Environment variables
-3. `.env` file at `~/.outliner/`
-4. `.env` file at `~/`
-5. `.env` file at `./`
-
-### supported `TOKEN_NAME`
-find in `pkg/cloud/{ProviderNmae}/activator.go` 
+find full list in `pkg/cloud/{ProviderNmae}/activator.go` as below
 ```
 var tokenNames = []string{
     "SUPPORTED_TOKEN_NAME_1",
@@ -84,6 +98,21 @@ var tokenNames = []string{
     ...
 }
 ```
+
+### Support configuration source
+outliner Support the following configuration source (list by Precedence order)
+
+1. with flag `-F, --file {FILE_PATH}`
+2. Environment variables
+3. `.env` file at `~/.outliner/`
+4. `.env` file at `~/`
+5. `.env` file at `./`
+
+## Support Cloud(IaaS)
+* Linode
+* DigitalOcean (WIP)
+* Vultr (WIP)
+...
 
 ## Development and Build
 1. install depend package
@@ -96,5 +125,5 @@ $ make build
 ```
 3. run
 ```
-$ ./outliner
+$ ./build/outliner_$(go env GOOS)
 ```

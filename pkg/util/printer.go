@@ -6,8 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Songmu/prompter"
-	. "github.com/logrusorgru/aurora"
+	"github.com/logrusorgru/aurora"
 	"github.com/olekukonko/tablewriter"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
@@ -134,16 +133,8 @@ func PrintAPICertJSON(in ol.APICert) {
 	fmt.Println("To manage your Outline server, please copy the following line")
 	fmt.Println("(including curly brackets) into Step 2 of the Outline Manager interface:")
 	fmt.Println()
-	fmt.Println(Green(string(b)))
+	fmt.Println(aurora.Green(string(b)))
 	fmt.Println()
-}
-
-func ContinueInteractive() bool {
-	return prompter.YN("Do you want to continue to Auto Deploying", true)
-}
-
-func ContinueKeyGen() bool {
-	return prompter.YN("Continue to Generate New ssh key?", true)
 }
 
 func PrintByeNoKey() {
