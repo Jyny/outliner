@@ -142,6 +142,14 @@ func ContinueInteractive() bool {
 	return prompter.YN("Do you want to continue to Auto Deploying", true)
 }
 
+func ContinueKeyGen() bool {
+	return prompter.YN("Continue to Generate New ssh key?", true)
+}
+
+func PrintByeNoKey() {
+	fmt.Println("Comback when your ssh key Ready")
+}
+
 func PrintCreateInstanceStart() {
 	log.Println("[Creating Server]")
 }
