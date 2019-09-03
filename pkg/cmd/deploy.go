@@ -33,6 +33,11 @@ var deployCmd = &cobra.Command{
 			panic(err)
 		}
 		util.PrintDeployInstanceDone()
+		inst, err := cloud.GetInstanceIDbyIP(ip)
+		if err != nil {
+			panic(err)
+		}
+		viper.Set("id", inst.ID)
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
 		inspectCmd.Run(inspectCmd, []string{})

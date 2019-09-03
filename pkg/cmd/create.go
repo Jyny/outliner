@@ -50,12 +50,11 @@ var createCmd = &cobra.Command{
 		util.PrintCreateInstanceDone()
 		util.PrintInstancesTable([]ol.Instance{inst})
 		viper.Set("ip", inst.IPv4)
-		viper.Set("id", inst.ID)
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
 		if util.ContinueInteractive() {
-			util.Waitforawhile()
 			deployCmd.PreRun(deployCmd, []string{})
+			util.Waitforawhile()
 			deployCmd.Run(deployCmd, []string{})
 			deployCmd.PostRun(deployCmd, []string{})
 		}

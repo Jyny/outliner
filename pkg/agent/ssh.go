@@ -6,9 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
-	"os/user"
 	"path/filepath"
 	"strings"
 	"time"
@@ -16,50 +14,13 @@ import (
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/jyny/outliner/pkg/agent/constdef"
+	"github.com/jyny/outliner/pkg/agent/consts"
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
 type SecureShell struct {
 	credentialPub string
 	credentialPvt string
-}
-
-func New() ol.Agent {
-	certok := true
-	u, _ := user.Current()
-
-	keypub := filepath.Join(u.HomeDir, "/.ssh/id_rsa.pub")
-	keypvt := filepath.Join(u.HomeDir, "/.ssh/id_rsa")
-
-	keypubBytes, err := ioutil.ReadFile(keypub)
-	if err != nil {
-		log.Println(err)
-		certok = false
-	}
-	keypvtBytes, err := ioutil.ReadFile(keypvt)
-	if err != nil {
-		log.Println(err)
-		certok = false
-	}
-
-	if certok {
-		return SecureShell{
-			credentialPub: strings.TrimRight(string(keypubBytes), "\n"),
-			credentialPvt: strings.TrimRight(string(keypvtBytes), "\n"),
-		}
-	}
-
-	credentialPub, credentialPvt := genNewCredential()
-	return SecureShell{
-		credentialPub: credentialPub,
-		credentialPvt: credentialPvt,
-	}
-}
-
-func genNewCredential() (string, string) {
-	// Todo
-	return "", ""
 }
 
 func (s SecureShell) GetCredentialPub() string {
@@ -73,13 +34,13 @@ func (s SecureShell) sendscript(conn *ssh.Client) error {
 	}
 	defer client.Close()
 
-	srcFile, err := Script.Open(constdef.ScriptName)
+	srcFile, err := Script.Open(consts.ScriptName)
 	if err != nil {
 		return err
 	}
 	defer srcFile.Close()
 
-	dstFile, err := client.Create(filepath.Join("/root/", constdef.ScriptName))
+	dstFile, err := client.Create(filepath.Join("/root/", consts.ScriptName))
 	if err != nil {
 		return err
 	}
@@ -144,7 +105,7 @@ func (s SecureShell) Deploy(ip string) error {
 	log.Println("[Deploy script uploaded]")
 
 	// runscript
-	cmd := "chmod +x " + constdef.ScriptName
+	cmd := "chmod +x " + consts.ScriptName
 	log.Println("[Deploy init]", cmd)
 	err = s.runscript(conn, cmd)
 	if err != nil {
@@ -152,7 +113,7 @@ func (s SecureShell) Deploy(ip string) error {
 	}
 
 	cmd = "nohup bash "
-	cmd += filepath.Join("/root/", constdef.ScriptName)
+	cmd += filepath.Join("/root/", consts.ScriptName)
 	cmd += " &> /tmp/out &"
 	log.Println("[Deploy init]", cmd)
 	err = s.runscript(conn, cmd)
