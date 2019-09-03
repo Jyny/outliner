@@ -139,6 +139,10 @@ func PrintAPICertJSON(in ol.APICert) {
 }
 
 func ContinueInteractive() bool {
+	fmt.Println("The next step is to deploy")
+	fmt.Println("deploy outliner VPN to server just create")
+	fmt.Println("you can continue to audo start or Do it your self")
+	fmt.Println("this is same as `./outliner deploy -i {SERVER_IP}`")
 	return prompter.YN("Do you want to continue to Auto Deploying", true)
 }
 
