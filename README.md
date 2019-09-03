@@ -36,14 +36,9 @@ Use "outliner [command] --help" for more information about a command.
 - [Development and Build](#development-and-build)
 
 ## Download
-#### * OSX
-[https://github.com/Jyny/outliner/releases/download/v0.1/outliner_darwin](https://github.com/Jyny/outliner/releases/download/v0.1/outliner_darwin)
+download from latest [release](https://github.com/Jyny/outliner/releases/latest)
 
-#### * Linux
-[https://github.com/Jyny/outliner/releases/download/v0.1/outliner_linux](https://github.com/Jyny/outliner/releases/download/v0.1/outliner_linux)
-
-#### * Windlows
-[https://github.com/Jyny/outliner/releases/download/v0.1/outliner_windows.exe](https://github.com/Jyny/outliner/releases/download/v0.1/outliner_windows.exe)
+## Install
 
 ## Configuration
 ### Steps
@@ -96,5 +91,5 @@ $ make build
 ```
 3. run
 ```
-$ ./outliner
+$ ./build/outliner_$(go env GOOS)
 ```
