@@ -173,3 +173,7 @@ func PrintDeployInstanceWait() {
 func PrintDeployInstanceDone() {
 	log.Println("[Server Deployed]")
 }
+
+func PrintVersion(v string) {
+	fmt.Println(v)
+}

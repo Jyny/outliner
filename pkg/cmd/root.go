@@ -18,6 +18,7 @@ import (
 
 // Persistent Flags
 var cfgFile string
+var version = ""
 
 // Persistent for commends
 var cloud = ol.NewCloud()

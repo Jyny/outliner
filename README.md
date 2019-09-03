@@ -15,6 +15,7 @@ Available Commands:
   help        Help about any command
   inspect     inspect Server
   list        list following [command]
+  version     show outliner version
 
 Flags:
   -F, --file string   config file (default is $HOME/.outliner/.env)
