@@ -1,9 +1,6 @@
 # Outliner
-Auto setup & deploy tool for outline VPN server
+**Auto setup & deploy tool for outline VPN server**
 
-## Download and Install
-
-## Usage
 [![asciicast](https://asciinema.org/a/265622.svg)](https://asciinema.org/a/265622)
 ```
 Auto setup & deploy tool for outline VPN server
@@ -26,28 +23,50 @@ Flags:
 Use "outliner [command] --help" for more information about a command.
 ```
 
+## Contents
+- [Download and Install](#download-and-install)
+- [Configuration](#configuration)
+  - [Steps](#steps)
+  - [Basic](#basic)
+    - [config by `.env` file](#config-by-env-file)
+    - [config by Environment Variables](#config-by-environment-variables)
+  - [Other configuration source](#other-configuration-source)
+  - [supported `TOKEN_NAME`](#supported-token_name)
+- [Development and Build](#development-and-build)
+
+## Download and Install
+
 ## Configuration
-### Example
-#### 1. by config file (`.env` by default)
+### Steps
+1.  you will need `API-TOKEN` from cloud providers, like `Linode`, `DigitalOcean` and etc.
+
+2. write `.env` config file, [refer to the following](config-by-env-file)
+
+### Basic
+following is two of config method in easiest way
+
+#### config by `.env` file
 * `~/.outliner/.env`
 ```
 {TOKEN_NAME_1} = {TOKEN_VALUE_1}
 {TOKEN_NAME_2} = {TOKEN_VALUE_2}
 ```
 
-#### 2. by Environment Variables
+#### config by Environment Variables
 ```
 $ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
 ```
 
-### support following config methods (list by Precedence order)
+### Other configuration source
+Support the following configuration source (list by Precedence order)
+
 1. with flag `-F, --file {FILE_PATH}`
 2. Environment variables
 3. `.env` file at `~/.outliner/`
 4. `.env` file at `~/`
 5. `.env` file at `./`
 
-### supported `{TOKEN_NAME}`
+### supported `TOKEN_NAME`
 find in `pkg/cloud/{ProviderNmae}/activator.go` 
 ```
 var tokenNames = []string{
@@ -57,7 +76,7 @@ var tokenNames = []string{
 }
 ```
 
-## Development & Build
+## Development and Build
 1. install depend package
 ```
 $ make mod
