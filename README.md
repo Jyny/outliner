@@ -24,15 +24,17 @@ Flags:
 
 Use "outliner [command] --help" for more information about a command.
 ```
+---
 
 ## Contents
 - [Install or Download](#install-or-download)
+  - [Mac OSX](#mac-osx)
+  - [Download binary from latest release](#download-binary-from-latest-release)
 - [Setup](#setup)
   - [1. Get `API_TOKEN`](#1-get-api_token)
   - [2. Make a `.env` config file](#2-make-a-env-config-file)
   - [3. Generate ssh key](#3-generate-ssh-key)
   - [4. Ready to go](#4-ready-to-go)
-- [Usage](#usage)
 - [Configurations](#configurations)
   - [config by `.env` file](#config-by-env-file)
   - [config by Environment Variables](#config-by-environment-variables)
@@ -41,10 +43,12 @@ Use "outliner [command] --help" for more information about a command.
 - [Support Cloud(IaaS)](#support-cloudiaas)
 - [Development and Build](#development-and-build)
 
+---
+
 ## Install or Download
-### Mac OSX (wip)
+### Mac OSX
 ```
-$ brew isntall outliner
+$ brew install jyny/tap/outliner
 ```
 
 ### Arch linux (wip)
@@ -65,12 +69,16 @@ $ brew isntall outliner
 get `API_TOKEN` from cloud providers you want, like `Linode`, `DigitalOcean` and etc.
 
 #### 2. Make a `.env` config file
-write the `API_TOKEN` to `.env` file whith `TOKEN_NAME` [like this](#config-by-env-file).
-Reference the  [Support `TOKEN_NAME`](#supported-token_name) below.
+write the `API_TOKEN` to `.env` file with [Support `TOKEN_NAME`](#support-token_name).
+* `~/.outliner/.env`
+```
+TOKEN_NAME_1 = TOKEN_VALUE_1
+TOKEN_NAME_2 = TOKEN_VALUE_2
+...
+```
 
 #### 3. Generate SSH key
-outliner support auto generate ssh key, if Not found `id_rsa` and `id_rsa.pub` in `$HOME/.ssh/`.
-[ssh library package](https://godoc.org/golang.org/x/crypto/ssh) outliner use, is implement by golang.org
+outliner will generate ssh key, if Not found `id_rsa` and `id_rsa.pub` in `$HOME/.ssh/`.
 run any command in outliner will do this after asking.
 ```
 $ outliner help
@@ -86,6 +94,8 @@ To generate key by yourself, see [Generating a new SSH key and adding it to the 
   1. open terminal, go directory whrere you download outliner
   2. maybe should add execute permission to binary (linux or mac)
   3. `$ ./outliner_{OS}`
+
+---
 
 ## Configurations
 ### config by `.env` file
@@ -133,6 +143,8 @@ outliner Support the following configuration source (list by Precedence order)
 * DigitalOcean (WIP)
 * Vultr (WIP)
 ...
+
+---
 
 ## Development and Build
 #### 1. install package and build binary
