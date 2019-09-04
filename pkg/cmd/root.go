@@ -29,6 +29,7 @@ var rootCmd = &cobra.Command{
 	Short: "Auto setup & deploy tool for outline VPN server",
 	Long:  "Auto setup & deploy tool for outline VPN server",
 }
+var RootCmd = rootCmd
 
 // Execute entry of commandline
 func Execute() {

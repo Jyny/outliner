@@ -26,7 +26,7 @@ Use "outliner [command] --help" for more information about a command.
 ```
 
 ## Contents
-- [Download](#download)
+- [Install or Download](#install-or-download)
 - [Setup](#setup)
   - [1. Get `API_TOKEN`](#1-get-api_token)
   - [2. Make a `.env` config file](#2-make-a-env-config-file)
@@ -41,18 +41,34 @@ Use "outliner [command] --help" for more information about a command.
 - [Support Cloud(IaaS)](#support-cloudiaas)
 - [Development and Build](#development-and-build)
 
-## Download
-download from latest [release](https://github.com/Jyny/outliner/releases/latest)
+## Install or Download
+### Mac OSX (wip)
+```
+$ brew isntall outliner
+```
+
+### Arch linux (wip)
+```
+# pacman -S outliner
+```
+
+### Ubuntu (wip)
+```
+# apt isntall outliner
+```
+
+### Download binary from latest release
+[https://github.com/Jyny/outliner/releases/latest](https://github.com/Jyny/outliner/releases/latest)
 
 ## Setup
-##### 1. Get `API_TOKEN`
+#### 1. Get `API_TOKEN`
 get `API_TOKEN` from cloud providers you want, like `Linode`, `DigitalOcean` and etc.
 
-##### 2. Make a `.env` config file
+#### 2. Make a `.env` config file
 write the `API_TOKEN` to `.env` file whith `TOKEN_NAME` [like this](#config-by-env-file).
 Reference the  [Support `TOKEN_NAME`](#supported-token_name) below.
 
-##### 3. Generate SSH key
+#### 3. Generate SSH key
 outliner support auto generate ssh key, if Not found `id_rsa` and `id_rsa.pub` in `$HOME/.ssh/`.
 [ssh library package](https://godoc.org/golang.org/x/crypto/ssh) outliner use, is implement by golang.org
 run any command in outliner will do this after asking.
@@ -62,10 +78,14 @@ Continue to Generate New ssh key? (y/n) [y]:
 ```
 To generate key by yourself, see [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/enterprise/2.16/user/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
-##### 4. Ready to go
-* open terminal, go directory whrere you download outliner
-* maybe should add execute permission to binary (linux or mac)
-* `$ ./build/outliner_{OS}`
+#### 4. Ready to go
+##### * install by package manager like `homeberw` `pacman` `apt` etc.
+  1. `$ outliner`
+
+##### * install by download
+  1. open terminal, go directory whrere you download outliner
+  2. maybe should add execute permission to binary (linux or mac)
+  3. `$ ./outliner_{OS}`
 
 ## Configurations
 ### config by `.env` file
@@ -115,15 +135,11 @@ outliner Support the following configuration source (list by Precedence order)
 ...
 
 ## Development and Build
-1. install depend package
+#### 1. install package and build binary
 ```
-$ make mod
+$ make
 ```
-2. build binary
+#### 2. run
 ```
-$ make build
-```
-3. run
-```
-$ ./build/outliner_$(go env GOOS)
+$ ./outliner
 ```
