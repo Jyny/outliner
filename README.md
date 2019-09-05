@@ -1,7 +1,7 @@
 # Outliner
 **CLI tool for Auto setup and deploy outline VPN**
 
-[![asciicast](https://asciinema.org/a/265622.svg)](https://asciinema.org/a/265622)
+[![asciicast](https://asciinema.org/a/laneLnHnXKy1tO2k2f9ETsLyQ.svg)](https://asciinema.org/a/laneLnHnXKy1tO2k2f9ETsLyQ)
 ```
 $ outliner --help
 Auto setup & deploy tool for outline VPN server
@@ -30,6 +30,7 @@ Use "outliner [command] --help" for more information about a command.
 ## Contents
 - [Install or Download](#install-or-download)
   - [Mac OSX](#mac-osx)
+  - [Arch linux](#arch-linux)
   - [Download release from GitHub](#download-release-from-github)
 - [Setup](#setup)
   - [1. Get `API_TOKEN`](#1-get-api_token)
@@ -46,12 +47,14 @@ Use "outliner [command] --help" for more information about a command.
 ## Install or Download
 ### Mac OSX
 ```
-$ brew install jyny/tap/outliner
+$ brew install jyny/outliner/outliner
 ```
 
-### Arch linux (wip)
+### Arch linux
+install from the [AUR](https://aur.archlinux.org/packages/outliner/).
+Use [yay](https://github.com/Jguer/yay) for example:
 ```
-# pacman -S outliner
+$ yay -S outliner
 ```
 
 ### Ubuntu (wip)
