@@ -15,7 +15,6 @@ import (
 
 	"github.com/jyny/outliner/pkg/deployer/ssh/consts"
 	ol "github.com/jyny/outliner/pkg/outliner"
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func NewAgent() ol.Agent {
@@ -49,14 +48,10 @@ func NewAgent() ol.Agent {
 }
 
 func genNewCredential() (pub string, pvt string) {
-	if !util.ContinueKeyGen() {
-		util.PrintByeNoKey()
-		os.Exit(1)
-	}
 	u, _ := user.Current()
 	savePrivateFileTo := filepath.Join(u.HomeDir, consts.SSHKeyPvtPath)
 	savePublicFileTo := filepath.Join(u.HomeDir, consts.SSHKeyPubPath)
-	os.MkdirAll(filepath.Join(u.HomeDir, "/.ssh/"), os.ModePerm)
+	os.MkdirAll(filepath.Join(u.HomeDir, "/.outliner/"), os.ModePerm)
 
 	bitSize := 4096
 	privateKey, err := generatePrivateKey(bitSize)
@@ -97,7 +92,7 @@ func generatePrivateKey(bitSize int) (*rsa.PrivateKey, error) {
 		return nil, err
 	}
 
-	log.Println("[Generating] Private Key generated")
+	log.Println("[Initializing] Private Key generated")
 	return privateKey, nil
 }
 
@@ -129,7 +124,7 @@ func generatePublicKey(privatekey *rsa.PublicKey) ([]byte, error) {
 
 	pubKeyBytes := ssh.MarshalAuthorizedKey(publicRsaKey)
 
-	log.Println("[Generating] Public key generated")
+	log.Println("[Initializing] Public key generated")
 	return pubKeyBytes, nil
 }
 
@@ -140,6 +135,6 @@ func writeKeyToFile(keyBytes []byte, saveFileTo string) error {
 		return err
 	}
 
-	log.Printf("[Generating] Key saved to: %s", saveFileTo)
+	log.Printf("[Initializing] Key saved to: %s", saveFileTo)
 	return nil
 }
