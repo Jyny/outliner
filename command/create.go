@@ -49,7 +49,7 @@ var createCmd = &cobra.Command{
 		}
 		util.PrintCreateInstanceDone()
 		util.PrintInstancesTable([]ol.Instance{inst})
-		viper.Set("ip", inst.IPv4)
+		viper.Set("deploy_ip", inst.IPv4)
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
 		if util.ContinueInteractive() {

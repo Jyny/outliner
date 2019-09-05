@@ -9,9 +9,9 @@ import (
 )
 
 func init() {
-	inspectCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
-	inspectCmd.MarkFlagRequired("id")
-	viper.BindPFlag("id", inspectCmd.Flags().Lookup("id"))
+	inspectCmd.Flags().StringP("ip", "i", "", "IP address of Server (required)")
+	inspectCmd.MarkFlagRequired("ip")
+	viper.BindPFlag("inspect_ip", inspectCmd.Flags().Lookup("ip"))
 	RootCmd.AddCommand(inspectCmd)
 }
 
@@ -19,17 +19,19 @@ var inspectCmd = &cobra.Command{
 	Use:   "inspect",
 	Short: "inspect Server",
 	Long:  `inspect Server`,
+	PreRun: func(cmd *cobra.Command, args []string) {
+		ip := viper.GetString("inspect_ip")
+		inst, err := cloud.InspectInstanceByIP(ip)
+		if err == nil {
+			util.PrintInstancesTable([]ol.Instance{inst})
+		}
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		id := viper.GetString("id")
-		inst, err := cloud.InspectInstance(id)
+		ip := viper.GetString("inspect_ip")
+		apicert, err := deployer.GetServiceCert(ip)
 		if err != nil {
 			panic(err)
 		}
-		apicert, err := deployer.GetServiceCert(inst.IPv4)
-		if err != nil {
-			panic(err)
-		}
-		util.PrintInstancesTable([]ol.Instance{inst})
 		util.PrintAPICertTable(apicert)
 		util.PrintAPICertJSON(apicert)
 	},
