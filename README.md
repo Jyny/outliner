@@ -24,17 +24,17 @@ Flags:
 
 Use "outliner [command] --help" for more information about a command.
 ```
+
 ---
 
 ## Contents
 - [Install or Download](#install-or-download)
   - [Mac OSX](#mac-osx)
-  - [Download binary from latest release](#download-binary-from-latest-release)
+  - [Download release from GitHub](#download-release-from-github)
 - [Setup](#setup)
   - [1. Get `API_TOKEN`](#1-get-api_token)
   - [2. Make a `.env` config file](#2-make-a-env-config-file)
-  - [3. Generate ssh key](#3-generate-ssh-key)
-  - [4. Ready to go](#4-ready-to-go)
+  - [3. Ready to go](#3-ready-to-go)
 - [Configurations](#configurations)
   - [config by `.env` file](#config-by-env-file)
   - [config by Environment Variables](#config-by-environment-variables)
@@ -42,8 +42,6 @@ Use "outliner [command] --help" for more information about a command.
   - [Support configuration source](#support-configuration-source)
 - [Support Cloud(IaaS)](#support-cloudiaas)
 - [Development and Build](#development-and-build)
-
----
 
 ## Install or Download
 ### Mac OSX
@@ -61,8 +59,8 @@ $ brew install jyny/tap/outliner
 # apt isntall outliner
 ```
 
-### Download binary from latest release
-[https://github.com/Jyny/outliner/releases/latest](https://github.com/Jyny/outliner/releases/latest)
+### Download release from GitHub
+Visit the [latest releases page](https://github.com/Jyny/outliner/releases/latest)
 
 ## Setup
 #### 1. Get `API_TOKEN`
@@ -77,25 +75,14 @@ TOKEN_NAME_2 = TOKEN_VALUE_2
 ...
 ```
 
-#### 3. Generate SSH key
-outliner will generate ssh key, if Not found `id_rsa` and `id_rsa.pub` in `$HOME/.ssh/`.
-run any command in outliner will do this after asking.
-```
-$ outliner help
-Continue to Generate New ssh key? (y/n) [y]:
-```
-To generate key by yourself, see [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/enterprise/2.16/user/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-
-#### 4. Ready to go
-##### * install by package manager like `homeberw` `pacman` `apt` etc.
+#### 3. Ready to go
+* install by package manager like `homeberw` `pacman` `apt` etc.
   1. `$ outliner`
 
-##### * install by download
+* install by download
   1. open terminal, go directory whrere you download outliner
   2. maybe should add execute permission to binary (linux or mac)
   3. `$ ./outliner_{OS}`
-
----
 
 ## Configurations
 ### config by `.env` file
@@ -120,6 +107,7 @@ $ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
 | Digitalocean |                    |
 | Vultr        |                    |
 
+
 find full list in `pkg/cloud/{ProviderNmae}/activator.go` as below
 ```
 var tokenNames = []string{
@@ -131,7 +119,6 @@ var tokenNames = []string{
 
 ### Support configuration source
 outliner Support the following configuration source (list by Precedence order)
-
 1. with flag `-F, --file {FILE_PATH}`
 2. Environment variables
 3. `.env` file at `~/.outliner/`
@@ -143,8 +130,6 @@ outliner Support the following configuration source (list by Precedence order)
 * DigitalOcean (WIP)
 * Vultr (WIP)
 ...
-
----
 
 ## Development and Build
 #### 1. install package and build binary

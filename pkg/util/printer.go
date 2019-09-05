@@ -137,10 +137,6 @@ func PrintAPICertJSON(in ol.APICert) {
 	fmt.Println()
 }
 
-func PrintByeNoKey() {
-	fmt.Println("Comback when your ssh key Ready")
-}
-
 func PrintCreateInstanceStart() {
 	log.Println("[Creating Server]")
 }

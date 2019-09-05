@@ -13,7 +13,3 @@ func ContinueInteractive() bool {
 	fmt.Println("This is same as `./outliner deploy -i {SERVER_IP}`.")
 	return prompter.YN("Do you want to continue to Auto Deploying", true)
 }
-
-func ContinueKeyGen() bool {
-	return prompter.YN("Continue to Generate New ssh key?", true)
-}
