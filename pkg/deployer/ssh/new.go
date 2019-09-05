@@ -1,4 +1,4 @@
-package agent
+package ssh
 
 import (
 	"crypto/rand"
@@ -13,12 +13,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jyny/outliner/pkg/agent/consts"
+	"github.com/jyny/outliner/pkg/deployer/ssh/consts"
 	ol "github.com/jyny/outliner/pkg/outliner"
 	"github.com/jyny/outliner/pkg/util"
 )
 
-func New() ol.Agent {
+func NewAgent() ol.Agent {
 	certok := true
 	u, _ := user.Current()
 

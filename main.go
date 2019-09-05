@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jyny/outliner/pkg/cmd"
+	"github.com/jyny/outliner/command"
 	"log"
 )
 
@@ -12,5 +12,5 @@ func main() {
 		}
 	}()
 
-	cmd.Execute()
+	command.Execute()
 }

@@ -3,7 +3,7 @@ WINDOWS=$(EXECUTABLE)_windows.exe
 LINUX=$(EXECUTABLE)_linux
 DARWIN=$(EXECUTABLE)_darwin
 VERSION=$(shell cat VERSION)
-XPKG="github.com/jyny/outliner/pkg/cmd"
+XPKG="github.com/jyny/outliner/command"
 
 all : build shell_completion
 	cp ./build/outliner_$(shell go env GOOS) ./outliner
@@ -19,7 +19,7 @@ build : mod embedded fmt
 	env GOOS=windows GOARCH=amd64 go build -o ./build/$(WINDOWS) -ldflags="-X $(XPKG).version=$(VERSION)"  .
 
 embedded :
-	@pushd pkg/agent > /dev/null && \
+	@pushd pkg/deployer/ssh > /dev/null && \
  	go run gen/gen.go \
 	&& popd > /dev/null
 

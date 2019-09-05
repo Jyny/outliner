@@ -4,7 +4,7 @@ import (
 	"github.com/shurcooL/vfsgen"
 	"net/http"
 
-	"github.com/jyny/outliner/pkg/agent/consts"
+	"github.com/jyny/outliner/pkg/deployer/ssh/consts"
 )
 
 func main() {

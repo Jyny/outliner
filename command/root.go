@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"os/user"
@@ -7,10 +7,13 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/jyny/outliner/pkg/agent"
 	ol "github.com/jyny/outliner/pkg/outliner"
 	"github.com/jyny/outliner/pkg/util"
 
+	// deployer agnet
+	"github.com/jyny/outliner/pkg/deployer/ssh"
+
+	// cloud provider
 	"github.com/jyny/outliner/pkg/cloud/linode"
 	//"github.com/jyny/outliner/pkg/cloud/vultr"
 	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
@@ -71,7 +74,7 @@ func init() {
 func initOutliner() {
 	// register deployer agent
 	deployer.RegisterAgent(
-		agent.New(),
+		ssh.NewAgent(),
 	)
 
 	// Activate & register cloud providers

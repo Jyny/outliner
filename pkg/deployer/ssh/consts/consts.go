@@ -10,7 +10,7 @@ const ScriptName = "./deploy.sh"
 const VariableName = "Script"
 
 // PackageName for gen vfsdata
-const PackageName = "agent"
+const PackageName = "ssh"
 
 // ssh key path
 const SSHKeyPubPath = "/.ssh/id_rsa.pub"
