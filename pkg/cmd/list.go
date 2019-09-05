@@ -12,7 +12,7 @@ func init() {
 	listCmd.AddCommand(specCmd)
 	listCmd.AddCommand(regineCmd)
 	listCmd.AddCommand(providerCmd)
-	rootCmd.AddCommand(listCmd)
+	RootCmd.AddCommand(listCmd)
 }
 
 var listCmd = &cobra.Command{

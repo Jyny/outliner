@@ -18,7 +18,7 @@ func init() {
 	viper.BindPFlag("spec", createCmd.Flags().Lookup("spec"))
 	viper.BindPFlag("region", createCmd.Flags().Lookup("region"))
 	viper.BindPFlag("provider", createCmd.Flags().Lookup("provider"))
-	rootCmd.AddCommand(createCmd)
+	RootCmd.AddCommand(createCmd)
 }
 
 var createCmd = &cobra.Command{

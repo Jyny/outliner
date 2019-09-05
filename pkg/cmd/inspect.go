@@ -12,7 +12,7 @@ func init() {
 	inspectCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
 	inspectCmd.MarkFlagRequired("id")
 	viper.BindPFlag("id", inspectCmd.Flags().Lookup("id"))
-	rootCmd.AddCommand(inspectCmd)
+	RootCmd.AddCommand(inspectCmd)
 }
 
 var inspectCmd = &cobra.Command{

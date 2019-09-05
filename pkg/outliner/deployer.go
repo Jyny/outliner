@@ -7,8 +7,8 @@ type Deployer struct {
 	agent Agent
 }
 
-// Init deployer cert init
-func (d *Deployer) Init(agent Agent) {
+// RegisterAgent Register Agent to deployer
+func (d *Deployer) RegisterAgent(agent Agent) {
 	d.agent = agent
 }
 

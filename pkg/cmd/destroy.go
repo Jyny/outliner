@@ -12,7 +12,7 @@ func init() {
 	destroyCmd.Flags().StringP("id", "i", "", "ID of Server (required)")
 	destroyCmd.MarkFlagRequired("id")
 	viper.BindPFlag("destroy_id", destroyCmd.Flags().Lookup("id"))
-	rootCmd.AddCommand(destroyCmd)
+	RootCmd.AddCommand(destroyCmd)
 }
 
 var destroyCmd = &cobra.Command{

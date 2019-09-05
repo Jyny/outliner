@@ -11,7 +11,7 @@ func init() {
 	deployCmd.Flags().StringP("ip", "i", "", "IP address of Server (required)")
 	deployCmd.MarkFlagRequired("ip")
 	viper.BindPFlag("ip", deployCmd.Flags().Lookup("ip"))
-	rootCmd.AddCommand(deployCmd)
+	RootCmd.AddCommand(deployCmd)
 }
 
 var deployCmd = &cobra.Command{
