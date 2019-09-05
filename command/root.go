@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"os/user"
@@ -7,13 +7,16 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/jyny/outliner/pkg/agent"
 	ol "github.com/jyny/outliner/pkg/outliner"
 	"github.com/jyny/outliner/pkg/util"
 
-	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
+	// deployer agnet
+	"github.com/jyny/outliner/pkg/deployer/ssh"
+
+	// cloud provider
 	"github.com/jyny/outliner/pkg/cloud/linode"
 	//"github.com/jyny/outliner/pkg/cloud/vultr"
+	//"github.com/jyny/outliner/pkg/cloud/digitalocean"
 )
 
 // Persistent Flags
@@ -24,23 +27,23 @@ var version = ""
 var cloud = ol.NewCloud()
 var deployer = ol.NewDeployer()
 
-var rootCmd = &cobra.Command{
+// RootCmd commands
+var RootCmd = &cobra.Command{
 	Use:   "outliner",
 	Short: "Auto setup & deploy tool for outline VPN server",
 	Long:  "Auto setup & deploy tool for outline VPN server",
 }
-var RootCmd = rootCmd
 
 // Execute entry of commandline
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		panic(err)
 	}
 }
 
 func init() {
 	cobra.OnInitialize(initOutliner)
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
+	RootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "F", "", "config file (default is $HOME/.outliner/.env)")
 
 	u, err := user.Current()
 	if err != nil {
@@ -69,15 +72,17 @@ func init() {
 }
 
 func initOutliner() {
-	// add new agent to deployer
-	deployer.Init(agent.New())
+	// register deployer agent
+	deployer.RegisterAgent(
+		ssh.NewAgent(),
+	)
 
 	// Activate & register cloud providers
 	err := cloud.RegisterProvider(
 		util.Validater,
-		//digitalocean.Activator{},
 		linode.Activator{},
 		//vultr.Activator{},
+		//digitalocean.Activator{},
 	)
 	if err != nil {
 		panic(err)

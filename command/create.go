@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"github.com/spf13/cobra"
@@ -18,7 +18,7 @@ func init() {
 	viper.BindPFlag("spec", createCmd.Flags().Lookup("spec"))
 	viper.BindPFlag("region", createCmd.Flags().Lookup("region"))
 	viper.BindPFlag("provider", createCmd.Flags().Lookup("provider"))
-	rootCmd.AddCommand(createCmd)
+	RootCmd.AddCommand(createCmd)
 }
 
 var createCmd = &cobra.Command{
@@ -49,7 +49,7 @@ var createCmd = &cobra.Command{
 		}
 		util.PrintCreateInstanceDone()
 		util.PrintInstancesTable([]ol.Instance{inst})
-		viper.Set("ip", inst.IPv4)
+		viper.Set("deploy_ip", inst.IPv4)
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
 		if util.ContinueInteractive() {

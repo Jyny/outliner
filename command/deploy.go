@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"github.com/spf13/cobra"
@@ -10,8 +10,8 @@ import (
 func init() {
 	deployCmd.Flags().StringP("ip", "i", "", "IP address of Server (required)")
 	deployCmd.MarkFlagRequired("ip")
-	viper.BindPFlag("ip", deployCmd.Flags().Lookup("ip"))
-	rootCmd.AddCommand(deployCmd)
+	viper.BindPFlag("deploy_ip", deployCmd.Flags().Lookup("ip"))
+	RootCmd.AddCommand(deployCmd)
 }
 
 var deployCmd = &cobra.Command{
@@ -22,7 +22,7 @@ var deployCmd = &cobra.Command{
 		util.PrintDeployInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		ip := viper.GetString("ip")
+		ip := viper.GetString("deploy_ip")
 		err := deployer.DeployService(ip)
 		if err != nil {
 			panic(err)
@@ -33,13 +33,11 @@ var deployCmd = &cobra.Command{
 			panic(err)
 		}
 		util.PrintDeployInstanceDone()
-		inst, err := cloud.GetInstanceIDbyIP(ip)
-		if err != nil {
-			panic(err)
-		}
-		viper.Set("id", inst.ID)
+		viper.Set("inspect_ip", ip)
+
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
+		inspectCmd.PreRun(inspectCmd, []string{})
 		inspectCmd.Run(inspectCmd, []string{})
 	},
 }

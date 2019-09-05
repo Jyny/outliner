@@ -90,8 +90,8 @@ func (c Cloud) WaitInstance(in Instance) error {
 	return c.pool[in.Provider].WaitInstance(in)
 }
 
-// GetInstanceIDbyIP Inspect Instance
-func (c *Cloud) GetInstanceIDbyIP(IP string) (Instance, error) {
+// InspectInstanceByIP Inspect Instance
+func (c *Cloud) InspectInstanceByIP(IP string) (Instance, error) {
 	for _, prvder := range c.pool {
 		insts, err := prvder.ListInstance()
 		if err != nil {
@@ -106,8 +106,8 @@ func (c *Cloud) GetInstanceIDbyIP(IP string) (Instance, error) {
 	return Instance{}, errors.New("Instance Not Found")
 }
 
-// InspectInstance Inspect Instance
-func (c *Cloud) InspectInstance(ID string) (Instance, error) {
+// InspectInstanceByID Inspect Instance
+func (c *Cloud) InspectInstanceByID(ID string) (Instance, error) {
 	for _, prvder := range c.pool {
 		insts, err := prvder.ListInstance()
 		if err != nil {

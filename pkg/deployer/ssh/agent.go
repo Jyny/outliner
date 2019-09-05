@@ -1,4 +1,4 @@
-package agent
+package ssh
 
 import (
 	"bufio"
@@ -14,7 +14,7 @@ import (
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/jyny/outliner/pkg/agent/consts"
+	"github.com/jyny/outliner/pkg/deployer/ssh/consts"
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 

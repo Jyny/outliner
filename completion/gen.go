@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/jyny/outliner/pkg/cmd"
+	"github.com/jyny/outliner/command"
 )
 
 func main() {
-	err := cmd.RootCmd.GenBashCompletionFile("build/outliner_bash_completion")
+	err := command.RootCmd.GenBashCompletionFile("build/outliner_bash_completion")
 	if err != nil {
 		panic(err)
 	}
-	err = cmd.RootCmd.GenZshCompletionFile("build/outliner_zsh_completion")
+	err = command.RootCmd.GenZshCompletionFile("build/outliner_zsh_completion")
 	if err != nil {
 		panic(err)
 	}
