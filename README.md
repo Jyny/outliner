@@ -31,6 +31,7 @@ Use "outliner [command] --help" for more information about a command.
 - [Install or Download](#install-or-download)
   - [Mac OSX](#mac-osx)
   - [Arch linux](#arch-linux)
+  - [Ubuntu or Snap supported OS](#ubuntu-or-snap-supported-os)
   - [Download release from GitHub](#download-release-from-github)
 - [Setup](#setup)
   - [1. Get `API_TOKEN`](#1-get-api_token)
@@ -51,15 +52,17 @@ $ brew install jyny/outliner/outliner
 ```
 
 ### Arch linux
-install from the [AUR](https://aur.archlinux.org/packages/outliner/).
+Install from the [AUR](https://aur.archlinux.org/packages/outliner/).
 Use [yay](https://github.com/Jguer/yay) for example:
 ```
 $ yay -S outliner
 ```
 
-### Ubuntu (wip)
+### Ubuntu or Snap supported OS
+Insatll from [Snap](https://snapcraft.io/) on [Snap-supported-OS](https://snapcraft.io/docs/core/install).
+[Snap](https://snapcraft.io/) on Ubuntu may work out of box after `16.04`.
 ```
-# apt isntall outliner
+$ snap install outliner
 ```
 
 ### Download release from GitHub
