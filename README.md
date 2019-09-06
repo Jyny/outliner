@@ -37,10 +37,10 @@ Use "outliner [command] --help" for more information about a command.
   - [2. Make a `.env` config file](#2-make-a-env-config-file)
   - [3. Ready to go](#3-ready-to-go)
 - [Configurations](#configurations)
-  - [config by `.env` file](#config-by-env-file)
-  - [config by Environment Variables](#config-by-environment-variables)
   - [Support `TOKEN_NAME`](#support-token_name)
   - [Support configuration source](#support-configuration-source)
+  - [config by `.env` file](#config-by-env-file)
+  - [config by Environment Variables](#config-by-environment-variables)
 - [Support Cloud(IaaS)](#support-cloudiaas)
 - [Development and Build](#development-and-build)
 
@@ -79,7 +79,7 @@ TOKEN_NAME_2 = TOKEN_VALUE_2
 ```
 
 #### 3. Ready to go
-* install by package manager like `homeberw` `pacman` `apt` etc.
+* install by package manager like `homeberw` `yay` `snap` etc.
   1. `$ outliner`
 
 * install by download
@@ -88,19 +88,6 @@ TOKEN_NAME_2 = TOKEN_VALUE_2
   3. `$ ./outliner_{OS}`
 
 ## Configurations
-### config by `.env` file
-* `~/.outliner/.env`
-```
-TOKEN_NAME_1 = TOKEN_VALUE_1
-TOKEN_NAME_2 = TOKEN_VALUE_2
-...
-```
-
-### config by Environment Variables
-```
-$ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
-```
-
 ### Support `TOKEN_NAME`
 | Provider     | TOKEN_NAME         | 
 | -------------|--------------------|
@@ -109,7 +96,6 @@ $ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
 | Linode       | `LINODE_API_TOKEN` |
 | Digitalocean |                    |
 | Vultr        |                    |
-
 
 find full list in `pkg/cloud/{ProviderNmae}/activator.go` as below
 ```
@@ -128,11 +114,24 @@ outliner Support the following configuration source (list by Precedence order)
 4. `.env` file at `~/`
 5. `.env` file at `./`
 
+### config by `.env` file
+* `~/.outliner/.env`
+```
+TOKEN_NAME_1 = TOKEN_VALUE_1
+TOKEN_NAME_2 = TOKEN_VALUE_2
+...
+```
+
+### config by Environment Variables
+```
+$ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
+```
+
 ## Support Cloud(IaaS)
 * Linode
 * DigitalOcean (WIP)
 * Vultr (WIP)
-...
+* ...
 
 ## Development and Build
 #### 1. install package and build binary
