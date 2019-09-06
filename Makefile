@@ -19,9 +19,9 @@ build : mod embedded fmt
 	env GOOS=windows GOARCH=amd64 go build -o ./build/$(WINDOWS) -ldflags="-X $(XPKG).version=$(VERSION)"  .
 
 embedded :
-	@pushd pkg/deployer/ssh > /dev/null && \
- 	go run gen/gen.go \
-	&& popd > /dev/null
+	@cd pkg/deployer/ssh; \
+	go run gen/gen.go; \
+	cd ../../../
 
 fmt :
 	gofmt -w ./
