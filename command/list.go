@@ -2,8 +2,6 @@ package command
 
 import (
 	"github.com/spf13/cobra"
-
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -40,7 +38,7 @@ var instCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintInstancesTable(insts)
+		printInstancesTable(insts)
 	},
 }
 
@@ -53,7 +51,7 @@ var regineCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintRegionsTable(regs)
+		printRegionsTable(regs)
 	},
 }
 
@@ -66,7 +64,7 @@ var specCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintSpecsTable(specs)
+		printSpecsTable(specs)
 	},
 }
 
@@ -79,6 +77,6 @@ var providerCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintProvidersTable(pvdrs)
+		printProvidersTable(pvdrs)
 	},
 }

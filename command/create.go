@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/viper"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -26,7 +25,7 @@ var createCmd = &cobra.Command{
 	Short: "create a Server",
 	Long:  `create a Server`,
 	PreRun: func(cmd *cobra.Command, args []string) {
-		util.PrintCreateInstanceStart()
+		printCreateInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		inst, err := cloud.CreateInstance(ol.Instance{
@@ -42,19 +41,19 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintCreateInstanceWait()
+		printCreateInstanceWait()
 		err = cloud.WaitInstance(inst)
 		if err != nil {
 			panic(err)
 		}
-		util.PrintCreateInstanceDone()
-		util.PrintInstancesTable([]ol.Instance{inst})
+		printCreateInstanceDone()
+		printInstancesTable([]ol.Instance{inst})
 		viper.Set("deploy_ip", inst.IPv4)
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
-		if util.ContinueInteractive() {
+		if continueInteractive() {
 			deployCmd.PreRun(deployCmd, []string{})
-			util.Waitforawhile()
+			waitforawhile()
 			deployCmd.Run(deployCmd, []string{})
 			deployCmd.PostRun(deployCmd, []string{})
 		}

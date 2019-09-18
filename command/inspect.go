@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/viper"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -23,7 +22,7 @@ var inspectCmd = &cobra.Command{
 		ip := viper.GetString("inspect_ip")
 		inst, err := cloud.InspectInstanceByIP(ip)
 		if err == nil {
-			util.PrintInstancesTable([]ol.Instance{inst})
+			printInstancesTable([]ol.Instance{inst})
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
@@ -32,7 +31,7 @@ var inspectCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintAPICertTable(apicert)
-		util.PrintAPICertJSON(apicert)
+		printAPICertTable(apicert)
+		printAPICertJSON(apicert)
 	},
 }

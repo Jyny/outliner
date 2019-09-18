@@ -1,10 +1,10 @@
 # Outliner
-**CLI tool for Auto setup and deploy outline VPN**
+**CLI tool for auto setup Outline VPN server**
 
 [![asciicast](https://asciinema.org/a/laneLnHnXKy1tO2k2f9ETsLyQ.svg)](https://asciinema.org/a/laneLnHnXKy1tO2k2f9ETsLyQ)
 ```
 $ outliner --help
-Auto setup & deploy tool for outline VPN server
+CLI tool for auto setup Outline VPN server
 
 Usage:
   outliner [command]

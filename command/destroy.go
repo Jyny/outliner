@@ -3,9 +3,6 @@ package command
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
-
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -20,17 +17,17 @@ var destroyCmd = &cobra.Command{
 	Short: "destroy a Server",
 	Long:  `destroy a Server`,
 	PreRun: func(cmd *cobra.Command, args []string) {
-		util.PrintDestroyInstanceStart()
+		printDestroyInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		id := viper.GetString("destroy_id")
-		log.Println(id)
+		printDestroyInstanceID(id)
 		err := cloud.DestroyInstance(id)
 		if err != nil {
 			panic(err)
 		}
 	},
 	PostRun: func(cmd *cobra.Command, args []string) {
-		util.PrintDestroyInstanceDone()
+		printDestroyInstanceDone()
 	},
 }
