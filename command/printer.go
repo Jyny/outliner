@@ -1,4 +1,4 @@
-package util
+package command
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 	ol "github.com/jyny/outliner/pkg/outliner"
 )
 
-func PrintRegionsTable(in map[string][]ol.Region) {
+func printRegionsTable(in map[string][]ol.Region) {
 	var data [][]string
 	for pname, p := range in {
 		for _, r := range p {
@@ -35,7 +35,7 @@ func PrintRegionsTable(in map[string][]ol.Region) {
 	table.Render()
 }
 
-func PrintSpecsTable(in map[string][]ol.Spec) {
+func printSpecsTable(in map[string][]ol.Spec) {
 	var data [][]string
 	for pname, p := range in {
 		for _, s := range p {
@@ -60,7 +60,7 @@ func PrintSpecsTable(in map[string][]ol.Spec) {
 	table.Render()
 }
 
-func PrintProvidersTable(in [][]string) {
+func printProvidersTable(in [][]string) {
 	var data [][]string
 	for _, p := range in {
 		data = append(data, []string{
@@ -79,7 +79,7 @@ func PrintProvidersTable(in [][]string) {
 	table.Render()
 }
 
-func PrintInstancesTable(in []ol.Instance) {
+func printInstancesTable(in []ol.Instance) {
 	var data [][]string
 	for _, i := range in {
 		data = append(data, []string{
@@ -104,7 +104,7 @@ func PrintInstancesTable(in []ol.Instance) {
 	table.Render()
 }
 
-func PrintAPICertTable(in ol.APICert) {
+func printAPICertTable(in ol.APICert) {
 	var data [][]string
 	data = append(data, []string{
 		in.APIurl,
@@ -121,7 +121,7 @@ func PrintAPICertTable(in ol.APICert) {
 	table.Render()
 }
 
-func PrintAPICertJSON(in ol.APICert) {
+func printAPICertJSON(in ol.APICert) {
 	b, err := json.Marshal(in)
 	if err != nil {
 		log.Println(err)
@@ -137,38 +137,42 @@ func PrintAPICertJSON(in ol.APICert) {
 	fmt.Println()
 }
 
-func PrintCreateInstanceStart() {
+func printCreateInstanceStart() {
 	log.Println("[Creating Server]")
 }
 
-func PrintCreateInstanceWait() {
+func printCreateInstanceWait() {
 	log.Println("[Wait Server to startup]")
 }
 
-func PrintCreateInstanceDone() {
+func printCreateInstanceDone() {
 	log.Println("[Server Created]")
 }
 
-func PrintDestroyInstanceStart() {
+func printDestroyInstanceStart() {
 	log.Println("[Destroying Server]")
 }
 
-func PrintDestroyInstanceDone() {
+func printDestroyInstanceID(id string) {
+	log.Println("[Destroying]", id)
+}
+
+func printDestroyInstanceDone() {
 	log.Println("[Server Destroid]")
 }
 
-func PrintDeployInstanceStart() {
+func printDeployInstanceStart() {
 	log.Println("[Deploying Server]")
 }
 
-func PrintDeployInstanceWait() {
+func printDeployInstanceWait() {
 	log.Println("[Wait deployment to completed]")
 }
 
-func PrintDeployInstanceDone() {
+func printDeployInstanceDone() {
 	log.Println("[Server Deployed]")
 }
 
-func PrintVersion(v string) {
+func printVersion(v string) {
 	fmt.Println(v)
 }

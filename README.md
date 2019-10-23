@@ -1,10 +1,10 @@
 # Outliner
-**CLI tool for Auto setup and deploy outline VPN**
+**CLI tool for auto setup Outline VPN server**
 
 [![asciicast](https://asciinema.org/a/laneLnHnXKy1tO2k2f9ETsLyQ.svg)](https://asciinema.org/a/laneLnHnXKy1tO2k2f9ETsLyQ)
 ```
 $ outliner --help
-Auto setup & deploy tool for outline VPN server
+CLI tool for auto setup Outline VPN server
 
 Usage:
   outliner [command]
@@ -28,6 +28,7 @@ Use "outliner [command] --help" for more information about a command.
 ---
 
 ## Contents
+- [Support Cloud(IaaS)](#support-cloudiaas)
 - [Install or Download](#install-or-download)
   - [Mac OSX](#mac-osx)
   - [Arch linux](#arch-linux)
@@ -42,8 +43,13 @@ Use "outliner [command] --help" for more information about a command.
   - [Support configuration source](#support-configuration-source)
   - [config by `.env` file](#config-by-env-file)
   - [config by Environment Variables](#config-by-environment-variables)
-- [Support Cloud(IaaS)](#support-cloudiaas)
 - [Development and Build](#development-and-build)
+
+## Support Cloud(IaaS)
+* Linode
+* DigitalOcean (WIP)
+* Vultr (WIP)
+* ...
 
 ## Install or Download
 ### Mac OSX
@@ -129,12 +135,6 @@ TOKEN_NAME_2 = TOKEN_VALUE_2
 ```
 $ {TOKEN_NAME_1}={TOKEN_VALUE_1} outliner [command]
 ```
-
-## Support Cloud(IaaS)
-* Linode
-* DigitalOcean (WIP)
-* Vultr (WIP)
-* ...
 
 ## Development and Build
 #### 1. install package and build binary

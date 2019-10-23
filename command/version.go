@@ -2,8 +2,6 @@ package command
 
 import (
 	"github.com/spf13/cobra"
-
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -15,6 +13,6 @@ var versionCmd = &cobra.Command{
 	Short: "show outliner version",
 	Long:  `show outliner version`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.PrintVersion(version)
+		printVersion(version)
 	},
 }

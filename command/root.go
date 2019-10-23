@@ -1,6 +1,7 @@
 package command
 
 import (
+	"errors"
 	"os/user"
 	"path/filepath"
 
@@ -8,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
-	"github.com/jyny/outliner/pkg/util"
 
 	// deployer agnet
 	"github.com/jyny/outliner/pkg/deployer/ssh"
@@ -30,8 +30,8 @@ var deployer = ol.NewDeployer()
 // RootCmd commands
 var RootCmd = &cobra.Command{
 	Use:   "outliner",
-	Short: "Auto setup & deploy tool for outline VPN server",
-	Long:  "Auto setup & deploy tool for outline VPN server",
+	Short: "CLI tool for auto setup Outline VPN server",
+	Long:  "CLI tool for auto setup Outline VPN server",
 }
 
 // Execute entry of commandline
@@ -79,7 +79,7 @@ func initOutliner() {
 
 	// Activate & register cloud providers
 	err := cloud.RegisterProvider(
-		util.Validater,
+		validater,
 		linode.Activator{},
 		//vultr.Activator{},
 		//digitalocean.Activator{},
@@ -87,4 +87,14 @@ func initOutliner() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func validater(actvr ol.Activator) (ol.Provider, error) {
+	for _, tokenName := range actvr.ListTokenName() {
+		token := viper.GetString(tokenName)
+		if actvr.VerifyToken(token) {
+			return actvr.GenProvider(token), nil
+		}
+	}
+	return nil, errors.New("invalid tokens")
 }

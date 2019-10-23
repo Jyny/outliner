@@ -8,7 +8,6 @@ import (
 	"github.com/linode/linodego"
 
 	ol "github.com/jyny/outliner/pkg/outliner"
-	"github.com/jyny/outliner/pkg/util"
 )
 
 var providerName = "Linode"
@@ -69,7 +68,7 @@ func (p Provider) ListInstance() ([]ol.Instance, error) {
 		return ret, err
 	}
 	for _, i := range res {
-		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
+		if !ol.InSliceOfString(i.Tags, ol.InstanceTag) {
 			continue
 		}
 		ret = append(ret, ol.Instance{
@@ -96,7 +95,7 @@ func (p Provider) CreateInstance(in ol.Instance) (ol.Instance, error) {
 			Tags:           []string{ol.InstanceTag},
 			Image:          "linode/ubuntu18.04",
 			AuthorizedKeys: []string{in.SSHKey},
-			RootPass:       util.GenRandomPasswd(),
+			RootPass:       ol.GenRandomPasswd(),
 		},
 	)
 	if err != nil {
@@ -122,7 +121,7 @@ func (p Provider) WaitInstance(in ol.Instance) error {
 		return err
 	}
 	for _, i := range res {
-		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
+		if !ol.InSliceOfString(i.Tags, ol.InstanceTag) {
 			continue
 		}
 		if i.Label == in.ID {
@@ -148,7 +147,7 @@ func (p Provider) DestroyInstance(id string) error {
 	}
 
 	for _, i := range res {
-		if !util.InSliceOfString(i.Tags, ol.InstanceTag) {
+		if !ol.InSliceOfString(i.Tags, ol.InstanceTag) {
 			continue
 		}
 		if i.Label == id {

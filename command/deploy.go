@@ -3,8 +3,6 @@ package command
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
-	"github.com/jyny/outliner/pkg/util"
 )
 
 func init() {
@@ -19,7 +17,7 @@ var deployCmd = &cobra.Command{
 	Short: "deploy outliner to Server",
 	Long:  `deploy outliner to Server`,
 	PreRun: func(cmd *cobra.Command, args []string) {
-		util.PrintDeployInstanceStart()
+		printDeployInstanceStart()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		ip := viper.GetString("deploy_ip")
@@ -27,12 +25,12 @@ var deployCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		util.PrintDeployInstanceWait()
+		printDeployInstanceWait()
 		err = deployer.WaitService(ip)
 		if err != nil {
 			panic(err)
 		}
-		util.PrintDeployInstanceDone()
+		printDeployInstanceDone()
 		viper.Set("inspect_ip", ip)
 
 	},

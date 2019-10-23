@@ -1,8 +1,5 @@
 package outliner
 
-func init() {
-}
-
 // NewCloud generate new cloud
 func NewCloud() *Cloud {
 	return &Cloud{
